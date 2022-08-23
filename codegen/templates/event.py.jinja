@@ -1,0 +1,48 @@
+from typing import Any
+
+from githubkit.utils import UNSET
+from nonebot.typing import overrides
+
+from nonebot.adapters import Event as BaseEvent
+
+
+class Event(BaseEvent):
+    id: str
+    name: str
+    payload: Any
+
+    to_me: bool = False
+
+    @overrides(BaseEvent)
+    def get_type(self) -> str:
+        return "notice"
+
+    @overrides(BaseEvent)
+    def get_event_name(self) -> str:
+        return self.event_name + f".{action}" if (action := getattr(self, "action", UNSET)) else ""
+
+    @overrides(BaseEvent)
+    def get_event_description(self) -> str:
+        return escape_tag(
+            f"{self.__class__.__name__} " +
+            (f"from sender {sender.login}" if (sender := getattr(self, "sender", UNSET)) else "") +
+            (f"in repository {repo.full_name}" if (repo := getattr(self, "repository", UNSET)) else "") +
+        )
+
+    @overrides(BaseEvent)
+    def get_message(self) -> Message:
+        raise ValueError("Event has no message!")
+
+    @overrides(BaseEvent)
+    def get_user_id(self) -> str:
+        if sender := getattr(self, "sender", UNSET):
+            return sender.login
+        raise ValueError("Event has no context!")
+
+    @overrides(BaseEvent)
+    def get_session_id(self) -> str:
+        return self.get_user_id()
+
+    @overrides(BaseEvent)
+    def is_tome(self) -> bool:
+        return self.to_me
