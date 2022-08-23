@@ -1,5 +1,6 @@
+import asyncio
 from functools import partial
-from typing import Any, Union, Optional
+from typing import Any, Union, Optional, cast
 
 from nonebot.typing import overrides
 from githubkit.webhooks import parse, verify
@@ -16,6 +17,7 @@ from nonebot.adapters import Adapter as BaseAdapter
 
 from .utils import log
 from .event import Event
+from .bot import Bot, OAuthBot, GitHubBot
 from .config import Config, OAuthApp, GitHubApp
 
 
@@ -39,17 +41,31 @@ class Adapter(BaseAdapter):
             )
 
         for app in self.github_config.github_apps:
-            self_id = app.client_id if isinstance(app, OAuthApp) else app.app_id
             webhook_route = HTTPServerSetup(
-                URL("/github/webhooks") / self_id,
+                URL("/github/webhooks") / app.id,
                 "POST",
                 self.get_name(),
                 partial(self._handle_webhook, app=app),
             )
             self.setup_http_server(webhook_route)
 
+        self.driver.on_startup(self._startup)
+
+    async def _startup(self):
+        await asyncio.gather(
+            *(self._startup_app(app) for app in self.github_config.github_apps)
+        )
+
+    async def _startup_app(self, app: Union[GitHubApp, OAuthApp]):
+        if isinstance(app, GitHubApp):
+            bot = GitHubBot(self, app)
+            await bot._get_self_info()
+        else:
+            bot = OAuthBot(self, app)
+        self.bot_connect(bot)
+
     async def _handle_webhook(
-        self, request: Request, app: Union[OAuthApp, GitHubApp]
+        self, request: Request, app: Union[GitHubApp, OAuthApp]
     ) -> Response:
         event_id = request.headers.get("x-github-delivery")
         event_name = request.headers.get("x-github-event")
@@ -71,8 +87,8 @@ class Adapter(BaseAdapter):
             return Response(400, content="Invalid Signature")
 
         if event := self.payload_to_event(event_id, event_name, payload):
-            self_id = app.client_id if isinstance(app, OAuthApp) else app.app_id
-            bot = self.bots.get(self_id, None)
+            bot = cast(Bot, self.bots[app.id])
+            asyncio.create_task(bot.handle_event(event))
 
         return Response(200, content="OK")
 
@@ -82,5 +98,6 @@ class Adapter(BaseAdapter):
     ) -> Optional[Event]:
         try:
             payload_event = parse(event_name, payload)
+            # TODO
         except Exception as e:
             log("ERROR", f"Failed to parse webhook payload {event_id}", e)
