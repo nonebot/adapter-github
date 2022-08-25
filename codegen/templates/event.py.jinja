@@ -1,7 +1,11 @@
-from typing import Any
+from typing import Any, Union
 
+{% for import_ in imports %}
+from githubkit.webhooks.models import {{ import_ }}
+{% endfor %}
 from githubkit.utils import UNSET
 from nonebot.typing import overrides
+from nonebot.utils import escape_tag
 
 from nonebot.adapters import Event as BaseEvent
 
@@ -19,14 +23,24 @@ class Event(BaseEvent):
 
     @overrides(BaseEvent)
     def get_event_name(self) -> str:
-        return self.event_name + f".{action}" if (action := getattr(self, "action", UNSET)) else ""
+        return self.name + (
+            f".{action}" if (action := getattr(self.payload, "action", None)) else ""
+        )
 
     @overrides(BaseEvent)
     def get_event_description(self) -> str:
         return escape_tag(
-            f"{self.__class__.__name__} " +
-            (f"from sender {sender.login}" if (sender := getattr(self, "sender", UNSET)) else "") +
-            (f"in repository {repo.full_name}" if (repo := getattr(self, "repository", UNSET)) else "") +
+            f"{self.__class__.__name__} "
+            + (
+                f"from sender {sender.login}"
+                if (sender := getattr(self.payload, "sender", None))
+                else ""
+            )
+            + (
+                f"in repository {repo.full_name}"
+                if (repo := getattr(self.payload, "repository", None))
+                else ""
+            )
         )
 
     @overrides(BaseEvent)
@@ -35,7 +49,7 @@ class Event(BaseEvent):
 
     @overrides(BaseEvent)
     def get_user_id(self) -> str:
-        if sender := getattr(self, "sender", UNSET):
+        if sender := getattr(self.payload, "sender", None):
             return sender.login
         raise ValueError("Event has no context!")
 
@@ -46,3 +60,11 @@ class Event(BaseEvent):
     @overrides(BaseEvent)
     def is_tome(self) -> bool:
         return self.to_me
+
+
+{% for event in events %}
+
+class {{ event.class_name }}(Event):
+    payload: {{ event.payload_type }}
+
+{% endfor %}
