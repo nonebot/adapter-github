@@ -8,6 +8,21 @@ from jinja2 import Environment, PackageLoader
 from githubkit.webhooks.models import GitHubWebhookModel
 from githubkit.webhooks.types import webhook_action_types
 
+MESSAGE_EVENTS = {
+    "CommitCommentCreated",
+    "IssueCommentCreated",
+    "PullRequestReviewCommentCreated",
+}
+HAS_MESSAGE_EVENTS = {
+    "CommitCommentCreated",
+    "IssueCommentCreated",
+    "IssueCommentDeleted",
+    "IssueCommentEdited",
+    "PullRequestReviewCommentCreated",
+    "PullRequestReviewCommentDeleted",
+    "PullRequestReviewCommentEdited",
+}
+
 
 @dataclass
 class Data:
@@ -45,5 +60,10 @@ def build_event():
 
     env = Environment(loader=PackageLoader("codegen"))
     template = env.get_template("event.py.jinja")
-    event_text = template.render(imports=imports, events=events)
+    event_text = template.render(
+        imports=imports,
+        events=events,
+        message_events=MESSAGE_EVENTS,
+        has_message_events=HAS_MESSAGE_EVENTS,
+    )
     Path("./nonebot/adapters/github/event.py").write_text(event_text)

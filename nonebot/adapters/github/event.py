@@ -1,6 +1,6 @@
 from typing import Any, Union
+from functools import cached_property
 
-from githubkit.utils import UNSET
 from nonebot.typing import overrides
 from nonebot.utils import escape_tag
 from githubkit.webhooks.models import ForkEvent as ForkEventPayload
@@ -379,6 +379,8 @@ from githubkit.webhooks.models import (
 
 from nonebot.adapters import Event as BaseEvent
 
+from .message import Message
+
 
 class Event(BaseEvent):
     id: str
@@ -551,6 +553,18 @@ class CodeScanningAlertReopenedByUser(Event):
 class CommitCommentCreated(Event):
     payload: CommitCommentCreatedPayload
 
+    @overrides(Event)
+    def get_type(self) -> str:
+        return "message"
+
+    @cached_property
+    def _message(self):
+        return Message(self.payload.comment.body)
+
+    @overrides(Event)
+    def get_message(self):
+        return self._message
+
 
 class DeployKeyCreated(Event):
     payload: DeployKeyCreatedPayload
@@ -667,13 +681,41 @@ class InstallationRepositoriesRemoved(Event):
 class IssueCommentCreated(Event):
     payload: IssueCommentCreatedPayload
 
+    @overrides(Event)
+    def get_type(self) -> str:
+        return "message"
+
+    @cached_property
+    def _message(self):
+        return Message(self.payload.comment.body)
+
+    @overrides(Event)
+    def get_message(self):
+        return self._message
+
 
 class IssueCommentDeleted(Event):
     payload: IssueCommentDeletedPayload
 
+    @cached_property
+    def _message(self):
+        return Message(self.payload.comment.body)
+
+    @overrides(Event)
+    def get_message(self):
+        return self._message
+
 
 class IssueCommentEdited(Event):
     payload: IssueCommentEditedPayload
+
+    @cached_property
+    def _message(self):
+        return Message(self.payload.comment.body)
+
+    @overrides(Event)
+    def get_message(self):
+        return self._message
 
 
 class IssuesAssigned(Event):
@@ -1021,13 +1063,41 @@ class PullRequestReviewSubmitted(Event):
 class PullRequestReviewCommentCreated(Event):
     payload: PullRequestReviewCommentCreatedPayload
 
+    @overrides(Event)
+    def get_type(self) -> str:
+        return "message"
+
+    @cached_property
+    def _message(self):
+        return Message(self.payload.comment.body)
+
+    @overrides(Event)
+    def get_message(self):
+        return self._message
+
 
 class PullRequestReviewCommentDeleted(Event):
     payload: PullRequestReviewCommentDeletedPayload
 
+    @cached_property
+    def _message(self):
+        return Message(self.payload.comment.body)
+
+    @overrides(Event)
+    def get_message(self):
+        return self._message
+
 
 class PullRequestReviewCommentEdited(Event):
     payload: PullRequestReviewCommentEditedPayload
+
+    @cached_property
+    def _message(self):
+        return Message(self.payload.comment.body)
+
+    @overrides(Event)
+    def get_message(self):
+        return self._message
 
 
 class PullRequestReviewThreadResolved(Event):

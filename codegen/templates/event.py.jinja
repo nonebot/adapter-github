@@ -1,13 +1,15 @@
 from typing import Any, Union
+from functools import cached_property
 
 {% for import_ in imports %}
 from githubkit.webhooks.models import {{ import_ }}
 {% endfor %}
-from githubkit.utils import UNSET
 from nonebot.typing import overrides
 from nonebot.utils import escape_tag
 
 from nonebot.adapters import Event as BaseEvent
+
+from .message import Message
 
 
 class Event(BaseEvent):
@@ -67,4 +69,21 @@ class Event(BaseEvent):
 class {{ event.class_name }}(Event):
     payload: {{ event.payload_type }}
 
+    {% if event.class_name in message_events %}
+    @overrides(Event)
+    def get_type(self) -> str:
+        return "message"
+    {% endif %}
+
+    {% if event.class_name in has_message_events %}
+    @cached_property
+    def _message(self):
+        return Message(self.payload.comment.body)
+
+
+    @overrides(Event)
+    def get_message(self):
+        return self._message
+
+    {% endif %}
 {% endfor %}
