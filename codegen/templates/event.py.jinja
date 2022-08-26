@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any, Dict, Union
 from functools import cached_property
 
 {% for import_ in imports %}
@@ -15,7 +15,7 @@ from .message import Message
 class Event(BaseEvent):
     id: str
     name: str
-    payload: Any
+    payload: Dict[str, Any]
 
     to_me: bool = False
 
@@ -84,6 +84,9 @@ class {{ event.class_name }}(Event):
     @overrides(Event)
     def get_message(self):
         return self._message
+
+    class Config:
+        keep_untouched = (cached_property,)
 
     {% endif %}
 {% endfor %}

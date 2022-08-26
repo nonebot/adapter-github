@@ -565,6 +565,9 @@ class CommitCommentCreated(Event):
     def get_message(self):
         return self._message
 
+    class Config:
+        keep_untouched = (cached_property,)
+
 
 class DeployKeyCreated(Event):
     payload: DeployKeyCreatedPayload
@@ -693,6 +696,9 @@ class IssueCommentCreated(Event):
     def get_message(self):
         return self._message
 
+    class Config:
+        keep_untouched = (cached_property,)
+
 
 class IssueCommentDeleted(Event):
     payload: IssueCommentDeletedPayload
@@ -705,6 +711,9 @@ class IssueCommentDeleted(Event):
     def get_message(self):
         return self._message
 
+    class Config:
+        keep_untouched = (cached_property,)
+
 
 class IssueCommentEdited(Event):
     payload: IssueCommentEditedPayload
@@ -716,6 +725,9 @@ class IssueCommentEdited(Event):
     @overrides(Event)
     def get_message(self):
         return self._message
+
+    class Config:
+        keep_untouched = (cached_property,)
 
 
 class IssuesAssigned(Event):
@@ -1075,6 +1087,9 @@ class PullRequestReviewCommentCreated(Event):
     def get_message(self):
         return self._message
 
+    class Config:
+        keep_untouched = (cached_property,)
+
 
 class PullRequestReviewCommentDeleted(Event):
     payload: PullRequestReviewCommentDeletedPayload
@@ -1087,6 +1102,9 @@ class PullRequestReviewCommentDeleted(Event):
     def get_message(self):
         return self._message
 
+    class Config:
+        keep_untouched = (cached_property,)
+
 
 class PullRequestReviewCommentEdited(Event):
     payload: PullRequestReviewCommentEditedPayload
@@ -1098,6 +1116,9 @@ class PullRequestReviewCommentEdited(Event):
     @overrides(Event)
     def get_message(self):
         return self._message
+
+    class Config:
+        keep_untouched = (cached_property,)
 
 
 class PullRequestReviewThreadResolved(Event):
