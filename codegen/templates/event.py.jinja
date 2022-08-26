@@ -87,3 +87,17 @@ class {{ event.class_name }}(Event):
 
     {% endif %}
 {% endfor %}
+
+events = {
+    {% for event, types in types.items() %}
+    {% if types is mapping %}
+    "{{ event }}": {
+        {% for action, type in types.items() %}
+        "{{ action }}": {{ type }},
+        {% endfor %}
+    },
+    {% else %}
+    "{{ event }}": {{ types }},
+    {% endif %}
+    {% endfor %}
+}

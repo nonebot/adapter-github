@@ -1,4 +1,6 @@
+import json
 import asyncio
+import inspect
 from functools import partial
 from typing import Any, Union, Optional, cast
 
@@ -16,7 +18,7 @@ from nonebot.drivers import (
 from nonebot.adapters import Adapter as BaseAdapter
 
 from .utils import log
-from .event import Event
+from .event import Event, events
 from .bot import Bot, OAuthBot, GitHubBot
 from .config import Config, OAuthApp, GitHubApp
 
@@ -96,8 +98,25 @@ class Adapter(BaseAdapter):
     def payload_to_event(
         cls, event_id: str, event_name: str, payload: Union[str, bytes]
     ) -> Optional[Event]:
+        event_payload = json.loads(payload)
         try:
-            payload_event = parse(event_name, payload)
-            # TODO
+            types = events.get(event_name)
+            if isinstance(types, dict):
+                if action := event_payload.get("action"):
+                    return types[action].parse_obj(
+                        {"id": event_id, "name": event_name, "payload": event_payload}
+                    )
+                else:
+                    raise ValueError(
+                        f"Payload missing action, either of {', '.join(types)}."
+                    )
+            elif types is None:
+                raise ValueError(f"Unknown event type {event_name}.")
+            return types.parse_obj(
+                {"id": event_id, "name": event_name, "payload": event_payload}
+            )
         except Exception as e:
-            log("ERROR", f"Failed to parse webhook payload {event_id}", e)
+            log("WARNING", f"Failed to parse webhook payload {event_id}", e)
+            return Event.parse_obj(
+                {"id": event_id, "name": event_name, "payload": event_payload}
+            )

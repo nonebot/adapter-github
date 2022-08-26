@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any, Dict, Union
 from functools import cached_property
 
 from nonebot.typing import overrides
@@ -385,7 +385,7 @@ from .message import Message
 class Event(BaseEvent):
     id: str
     name: str
-    payload: Any
+    payload: Dict[str, Any]
 
     to_me: bool = False
 
@@ -1290,3 +1290,290 @@ class WorkflowRunCompleted(Event):
 
 class WorkflowRunRequested(Event):
     payload: WorkflowRunRequestedPayload
+
+
+events = {
+    "create": CreateEvent,
+    "delete": DeleteEvent,
+    "fork": ForkEvent,
+    "gollum": GollumEvent,
+    "page_build": PageBuildEvent,
+    "ping": PingEvent,
+    "public": PublicEvent,
+    "push": PushEvent,
+    "repository_dispatch": RepositoryDispatchEvent,
+    "repository_import": RepositoryImportEvent,
+    "status": StatusEvent,
+    "team_add": TeamAddEvent,
+    "workflow_dispatch": WorkflowDispatchEvent,
+    "branch_protection_rule": {
+        "created": BranchProtectionRuleCreated,
+        "deleted": BranchProtectionRuleDeleted,
+        "edited": BranchProtectionRuleEdited,
+    },
+    "check_run": {
+        "completed": CheckRunCompleted,
+        "created": CheckRunCreated,
+        "requested_action": CheckRunRequestedAction,
+        "rerequested": CheckRunRerequested,
+    },
+    "check_suite": {
+        "completed": CheckSuiteCompleted,
+        "requested": CheckSuiteRequested,
+        "rerequested": CheckSuiteRerequested,
+    },
+    "code_scanning_alert": {
+        "appeared_in_branch": CodeScanningAlertAppearedInBranch,
+        "closed_by_user": CodeScanningAlertClosedByUser,
+        "created": CodeScanningAlertCreated,
+        "fixed": CodeScanningAlertFixed,
+        "reopened": CodeScanningAlertReopened,
+        "reopened_by_user": CodeScanningAlertReopenedByUser,
+    },
+    "commit_comment": {
+        "created": CommitCommentCreated,
+    },
+    "deploy_key": {
+        "created": DeployKeyCreated,
+        "deleted": DeployKeyDeleted,
+    },
+    "deployment": {
+        "created": DeploymentCreated,
+    },
+    "deployment_status": {
+        "created": DeploymentStatusCreated,
+    },
+    "discussion": {
+        "answered": DiscussionAnswered,
+        "category_changed": DiscussionCategoryChanged,
+        "created": DiscussionCreated,
+        "deleted": DiscussionDeleted,
+        "edited": DiscussionEdited,
+        "labeled": DiscussionLabeled,
+        "locked": DiscussionLocked,
+        "pinned": DiscussionPinned,
+        "transferred": DiscussionTransferred,
+        "unanswered": DiscussionUnanswered,
+        "unlabeled": DiscussionUnlabeled,
+        "unlocked": DiscussionUnlocked,
+        "unpinned": DiscussionUnpinned,
+    },
+    "discussion_comment": {
+        "created": DiscussionCommentCreated,
+        "deleted": DiscussionCommentDeleted,
+        "edited": DiscussionCommentEdited,
+    },
+    "github_app_authorization": {
+        "revoked": GithubAppAuthorizationRevoked,
+    },
+    "installation": {
+        "created": InstallationCreated,
+        "deleted": InstallationDeleted,
+        "new_permissions_accepted": InstallationNewPermissionsAccepted,
+        "suspend": InstallationSuspend,
+        "unsuspend": InstallationUnsuspend,
+    },
+    "installation_repositories": {
+        "added": InstallationRepositoriesAdded,
+        "removed": InstallationRepositoriesRemoved,
+    },
+    "issue_comment": {
+        "created": IssueCommentCreated,
+        "deleted": IssueCommentDeleted,
+        "edited": IssueCommentEdited,
+    },
+    "issues": {
+        "assigned": IssuesAssigned,
+        "closed": IssuesClosed,
+        "deleted": IssuesDeleted,
+        "demilestoned": IssuesDemilestoned,
+        "edited": IssuesEdited,
+        "labeled": IssuesLabeled,
+        "locked": IssuesLocked,
+        "milestoned": IssuesMilestoned,
+        "opened": IssuesOpened,
+        "pinned": IssuesPinned,
+        "reopened": IssuesReopened,
+        "transferred": IssuesTransferred,
+        "unassigned": IssuesUnassigned,
+        "unlabeled": IssuesUnlabeled,
+        "unlocked": IssuesUnlocked,
+        "unpinned": IssuesUnpinned,
+    },
+    "label": {
+        "created": LabelCreated,
+        "deleted": LabelDeleted,
+        "edited": LabelEdited,
+    },
+    "marketplace_purchase": {
+        "cancelled": MarketplacePurchaseCancelled,
+        "changed": MarketplacePurchaseChanged,
+        "pending_change": MarketplacePurchasePendingChange,
+        "pending_change_cancelled": MarketplacePurchasePendingChangeCancelled,
+        "purchased": MarketplacePurchasePurchased,
+    },
+    "member": {
+        "added": MemberAdded,
+        "edited": MemberEdited,
+        "removed": MemberRemoved,
+    },
+    "membership": {
+        "added": MembershipAdded,
+        "removed": MembershipRemoved,
+    },
+    "meta": {
+        "deleted": MetaDeleted,
+    },
+    "milestone": {
+        "closed": MilestoneClosed,
+        "created": MilestoneCreated,
+        "deleted": MilestoneDeleted,
+        "edited": MilestoneEdited,
+        "opened": MilestoneOpened,
+    },
+    "org_block": {
+        "blocked": OrgBlockBlocked,
+        "unblocked": OrgBlockUnblocked,
+    },
+    "organization": {
+        "deleted": OrganizationDeleted,
+        "member_added": OrganizationMemberAdded,
+        "member_invited": OrganizationMemberInvited,
+        "member_removed": OrganizationMemberRemoved,
+        "renamed": OrganizationRenamed,
+    },
+    "package": {
+        "published": PackagePublished,
+        "updated": PackageUpdated,
+    },
+    "project": {
+        "closed": ProjectClosed,
+        "created": ProjectCreated,
+        "deleted": ProjectDeleted,
+        "edited": ProjectEdited,
+        "reopened": ProjectReopened,
+    },
+    "project_card": {
+        "converted": ProjectCardConverted,
+        "created": ProjectCardCreated,
+        "deleted": ProjectCardDeleted,
+        "edited": ProjectCardEdited,
+        "moved": ProjectCardMoved,
+    },
+    "project_column": {
+        "created": ProjectColumnCreated,
+        "deleted": ProjectColumnDeleted,
+        "edited": ProjectColumnEdited,
+        "moved": ProjectColumnMoved,
+    },
+    "projects_v2_item": {
+        "archived": ProjectsV2ItemArchived,
+        "converted": ProjectsV2ItemConverted,
+        "created": ProjectsV2ItemCreated,
+        "deleted": ProjectsV2ItemDeleted,
+        "edited": ProjectsV2ItemEdited,
+        "reordered": ProjectsV2ItemReordered,
+        "restored": ProjectsV2ItemRestored,
+    },
+    "pull_request": {
+        "assigned": PullRequestAssigned,
+        "auto_merge_disabled": PullRequestAutoMergeDisabled,
+        "auto_merge_enabled": PullRequestAutoMergeEnabled,
+        "closed": PullRequestClosed,
+        "converted_to_draft": PullRequestConvertedToDraft,
+        "edited": PullRequestEdited,
+        "labeled": PullRequestLabeled,
+        "locked": PullRequestLocked,
+        "opened": PullRequestOpened,
+        "ready_for_review": PullRequestReadyForReview,
+        "reopened": PullRequestReopened,
+        "review_request_removed": PullRequestReviewRequestRemoved,
+        "review_requested": PullRequestReviewRequested,
+        "synchronize": PullRequestSynchronize,
+        "unassigned": PullRequestUnassigned,
+        "unlabeled": PullRequestUnlabeled,
+        "unlocked": PullRequestUnlocked,
+    },
+    "pull_request_review": {
+        "dismissed": PullRequestReviewDismissed,
+        "edited": PullRequestReviewEdited,
+        "submitted": PullRequestReviewSubmitted,
+    },
+    "pull_request_review_comment": {
+        "created": PullRequestReviewCommentCreated,
+        "deleted": PullRequestReviewCommentDeleted,
+        "edited": PullRequestReviewCommentEdited,
+    },
+    "pull_request_review_thread": {
+        "resolved": PullRequestReviewThreadResolved,
+        "unresolved": PullRequestReviewThreadUnresolved,
+    },
+    "release": {
+        "created": ReleaseCreated,
+        "deleted": ReleaseDeleted,
+        "edited": ReleaseEdited,
+        "prereleased": ReleasePrereleased,
+        "published": ReleasePublished,
+        "released": ReleaseReleased,
+        "unpublished": ReleaseUnpublished,
+    },
+    "repository": {
+        "archived": RepositoryArchived,
+        "created": RepositoryCreated,
+        "deleted": RepositoryDeleted,
+        "edited": RepositoryEdited,
+        "privatized": RepositoryPrivatized,
+        "publicized": RepositoryPublicized,
+        "renamed": RepositoryRenamed,
+        "transferred": RepositoryTransferred,
+        "unarchived": RepositoryUnarchived,
+    },
+    "repository_vulnerability_alert": {
+        "create": RepositoryVulnerabilityAlertCreate,
+        "dismiss": RepositoryVulnerabilityAlertDismiss,
+        "reopen": RepositoryVulnerabilityAlertReopen,
+        "resolve": RepositoryVulnerabilityAlertResolve,
+    },
+    "secret_scanning_alert": {
+        "created": SecretScanningAlertCreated,
+        "reopened": SecretScanningAlertReopened,
+        "resolved": SecretScanningAlertResolved,
+    },
+    "security_advisory": {
+        "performed": SecurityAdvisoryPerformed,
+        "published": SecurityAdvisoryPublished,
+        "updated": SecurityAdvisoryUpdated,
+        "withdrawn": SecurityAdvisoryWithdrawn,
+    },
+    "sponsorship": {
+        "cancelled": SponsorshipCancelled,
+        "created": SponsorshipCreated,
+        "edited": SponsorshipEdited,
+        "pending_cancellation": SponsorshipPendingCancellation,
+        "pending_tier_change": SponsorshipPendingTierChange,
+        "tier_changed": SponsorshipTierChanged,
+    },
+    "star": {
+        "created": StarCreated,
+        "deleted": StarDeleted,
+    },
+    "team": {
+        "added_to_repository": TeamAddedToRepository,
+        "created": TeamCreated,
+        "deleted": TeamDeleted,
+        "edited": TeamEdited,
+        "removed_from_repository": TeamRemovedFromRepository,
+    },
+    "watch": {
+        "started": WatchStarted,
+    },
+    "workflow_job": {
+        "completed": WorkflowJobCompleted,
+        "in_progress": WorkflowJobInProgress,
+        "queued": WorkflowJobQueued,
+    },
+    "workflow_run": {
+        "completed": WorkflowRunCompleted,
+        "requested": WorkflowRunRequested,
+    },
+}
