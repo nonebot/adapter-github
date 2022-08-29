@@ -94,6 +94,15 @@ class Adapter(BaseAdapter):
 
         return Response(200, content="OK")
 
+    async def _call_api(self, bot: Bot, api: str, **data: Any) -> Any:
+        parts = api.split(".")
+        func: Any = bot.github
+        for part in parts:
+            func = getattr(func, part)
+        if not inspect.isroutine(func) or not inspect.iscoroutinefunction(func):
+            raise TypeError(f"{api} is invalid.")
+        return await func(**data)
+
     @classmethod
     def payload_to_event(
         cls, event_id: str, event_name: str, payload: Union[str, bytes]
