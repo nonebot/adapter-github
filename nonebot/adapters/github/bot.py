@@ -1,7 +1,7 @@
 import re
 from typing_extensions import Self
 from contextlib import contextmanager
-from typing import TYPE_CHECKING, Any, Dict, List, Union, Optional, Generator
+from typing import TYPE_CHECKING, Any, Dict, List, Union, Callable, Optional, Generator
 
 from nonebot.typing import overrides
 from githubkit.utils import UNSET, Unset
@@ -10,10 +10,10 @@ from githubkit import GitHub, AppAuthStrategy, TokenAuthStrategy, OAuthAppAuthSt
 
 from nonebot.adapters import Bot as BaseBot
 
-from .event import Event
-from .utils import APIContext
-from .message import MessageSegment
 from .config import OAuthApp, GitHubApp
+from .message import Message, MessageSegment
+from .event import Event, CommitCommentCreated
+from .utils import APIContext, get_attr_or_item
 
 if TYPE_CHECKING:
     from githubkit.rest import RestNamespace
@@ -70,7 +70,46 @@ def _check_nickname(bot: "Bot", event: Event) -> None:
             message[0] = MessageSegment.markdown(text[m.end() :])
 
 
+async def send(
+    bot: "Bot", event: Event, message: Union[str, Message, MessageSegment]
+) -> Any:
+    msg = message if isinstance(message, Message) else Message(message)
+    if isinstance(event, CommitCommentCreated):
+        return await bot.rest.repos.async_create_commit_comment(
+            owner=event.payload.repository.owner.login,
+            repo=event.payload.repository.name,
+            commit_sha=event.payload.comment.commit_id,
+            body=msg.extract_plain_text(),
+        )
+
+    owner: Optional[str] = None
+    repo: Optional[str] = None
+    if repository := get_attr_or_item(event.payload, "repository"):
+        owner_user = get_attr_or_item(repository, "owner")
+        owner = get_attr_or_item(owner_user, "login")
+        repo = get_attr_or_item(repository, "name")
+
+    number: Optional[int] = None
+    if issue := get_attr_or_item(event.payload, "issue"):
+        number = get_attr_or_item(issue, "number")
+    elif pull_request := get_attr_or_item(event.payload, "pull_request"):
+        number = get_attr_or_item(pull_request, "number")
+
+    if owner and repo and number:
+        return await bot.rest.issues.async_create_comment(
+            owner=owner, repo=repo, issue_number=number, body=msg.extract_plain_text()
+        )
+
+    raise RuntimeError(
+        f"Cannot guess reply target for event type {event.__class__.__name__}"
+    )
+
+
 class Bot(BaseBot):
+
+    send_handler: Callable[
+        ["Bot", Event, Union[str, Message, MessageSegment]], Any
+    ] = send
 
     if TYPE_CHECKING:
         rest: RestNamespace
@@ -98,8 +137,10 @@ class Bot(BaseBot):
         await handle_event(self, event)
 
     @overrides(BaseBot)
-    async def send(self, event: Event, message):
-        ...
+    async def send(
+        self, event: Event, message: Union[str, Message, MessageSegment]
+    ) -> Any:
+        return await self.__class__.send_handler(self, event, message)
 
 
 class OAuthBot(Bot):

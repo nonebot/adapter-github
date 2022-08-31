@@ -10,6 +10,7 @@ from nonebot.utils import escape_tag
 from nonebot.adapters import Event as BaseEvent
 
 from .message import Message
+from .utils import get_attr_or_item
 
 
 class Event(BaseEvent):
@@ -26,7 +27,7 @@ class Event(BaseEvent):
     @overrides(BaseEvent)
     def get_event_name(self) -> str:
         return self.name + (
-            f".{action}" if (action := getattr(self.payload, "action", None)) else ""
+            f".{action}" if (action := get_attr_or_item(self.payload, "action")) else ""
         )
 
     @overrides(BaseEvent)
@@ -35,12 +36,12 @@ class Event(BaseEvent):
             f"{self.__class__.__name__} "
             + (
                 f"from sender {sender.login}"
-                if (sender := getattr(self.payload, "sender", None))
+                if (sender := get_attr_or_item(self.payload, "sender"))
                 else ""
             )
             + (
                 f"in repository {repo.full_name}"
-                if (repo := getattr(self.payload, "repository", None))
+                if (repo := get_attr_or_item(self.payload, "repository"))
                 else ""
             )
         )
@@ -51,7 +52,7 @@ class Event(BaseEvent):
 
     @overrides(BaseEvent)
     def get_user_id(self) -> str:
-        if sender := getattr(self.payload, "sender", None):
+        if sender := get_attr_or_item(self.payload, "sender"):
             return sender.login
         raise ValueError("Event has no context!")
 

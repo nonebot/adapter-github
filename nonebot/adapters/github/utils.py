@@ -1,4 +1,5 @@
 import re
+import contextlib
 from typing import TYPE_CHECKING, Any, Tuple
 
 from nonebot.utils import logger_wrapper
@@ -11,6 +12,11 @@ log = logger_wrapper("GitHub")
 
 def escape(content: str) -> str:
     return re.sub(r"\\|`|\*|_|{|}|\[|\]|\(|\)|#|\+|-|\.|!", r"\\\1", content)
+
+
+def get_attr_or_item(obj: Any, attr: str) -> Any:
+    with contextlib.suppress(TypeError):
+        return getattr(obj, attr, None) or obj[attr]
 
 
 class APIContext:

@@ -2,10 +2,11 @@ import json
 import asyncio
 import inspect
 from functools import partial
-from typing import Any, Union, Optional, cast
+from typing import Any, Union, Callable, Optional, cast
 
 from nonebot.typing import overrides
-from githubkit.webhooks import parse, verify
+from githubkit.webhooks import verify
+from githubkit.exception import RequestFailed
 from nonebot.drivers import (
     URL,
     Driver,
@@ -20,7 +21,9 @@ from nonebot.adapters import Adapter as BaseAdapter
 from .utils import log
 from .event import Event, events
 from .bot import Bot, OAuthBot, GitHubBot
+from .message import Message, MessageSegment
 from .config import Config, OAuthApp, GitHubApp
+from .exception import ActionFailed, NetworkError
 
 
 class Adapter(BaseAdapter):
@@ -101,7 +104,13 @@ class Adapter(BaseAdapter):
             func = getattr(func, part)
         if not inspect.isroutine(func) or not inspect.iscoroutinefunction(func):
             raise TypeError(f"{api} is invalid.")
-        return await func(**data)
+
+        try:
+            return await func(**data)
+        except RequestFailed as e:
+            raise ActionFailed(e.response) from None
+        except Exception as e:
+            raise NetworkError from e
 
     @classmethod
     def payload_to_event(
@@ -129,3 +138,11 @@ class Adapter(BaseAdapter):
             return Event.parse_obj(
                 {"id": event_id, "name": event_name, "payload": event_payload}
             )
+
+    @classmethod
+    def custom_send(
+        cls,
+        send_func: Callable[[Bot, Event, Union[str, Message, MessageSegment]], Any],
+    ):
+        """自定义 Bot 的回复函数。"""
+        Bot.send_handler = send_func
