@@ -6,7 +6,7 @@ from typing import Any, Union, Callable, Optional, cast
 
 from nonebot.typing import overrides
 from githubkit.webhooks import verify
-from githubkit.exception import RequestFailed
+from githubkit.exception import RequestFailed, RequestTimeout
 from nonebot.drivers import (
     URL,
     Driver,
@@ -23,7 +23,7 @@ from .event import Event, events
 from .bot import Bot, OAuthBot, GitHubBot
 from .message import Message, MessageSegment
 from .config import Config, OAuthApp, GitHubApp
-from .exception import ActionFailed, NetworkError
+from .exception import ActionFailed, NetworkError, ActionTimeout
 
 
 class Adapter(BaseAdapter):
@@ -109,8 +109,10 @@ class Adapter(BaseAdapter):
             return await func(**data)
         except RequestFailed as e:
             raise ActionFailed(e.response) from None
+        except RequestTimeout as e:
+            raise ActionTimeout(e.request) from None
         except Exception as e:
-            raise NetworkError from e
+            raise NetworkError(f"API request failed: {e!r}") from e
 
     @classmethod
     def payload_to_event(

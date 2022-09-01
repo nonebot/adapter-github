@@ -106,6 +106,7 @@ async def send(
 
 
 class Bot(BaseBot):
+    adapter: "Adapter"
 
     send_handler: Callable[
         ["Bot", Event, Union[str, Message, MessageSegment]], Any
@@ -148,7 +149,11 @@ class OAuthBot(Bot):
     def __init__(self, adapter: "Adapter", app: OAuthApp):
         super().__init__(adapter, app)
         self._github: GitHub[OAuthAppAuthStrategy] = GitHub(
-            OAuthAppAuthStrategy(app.client_id, app.client_secret)
+            OAuthAppAuthStrategy(app.client_id, app.client_secret),
+            base_url=self.adapter.github_config.github_base_url,
+            accept_format=self.adapter.github_config.github_accept_format,
+            previews=self.adapter.github_config.github_previews,
+            timeout=self.config.api_timeout,
         )
 
     @contextmanager
@@ -188,7 +193,11 @@ class GitHubBot(Bot):
         self._github: GitHub[AppAuthStrategy] = GitHub(
             AppAuthStrategy(
                 app.app_id, app.private_key, app.client_id, app.client_secret
-            )
+            ),
+            base_url=self.adapter.github_config.github_base_url,
+            accept_format=self.adapter.github_config.github_accept_format,
+            previews=self.adapter.github_config.github_previews,
+            timeout=self.config.api_timeout,
         )
         self._app_slug: Optional[str] = None
 
