@@ -22,8 +22,8 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-githubkit = "^0.6.0"
-nonebot2 = "^2.0.0-beta.3"
+nonebot2 = "^2.0.0-beta.5"
+githubkit = { version = "^0.6.1", extras = ["auth-app"] }
 
 [tool.poetry.dev-dependencies]
 isort = "^5.10.1"
