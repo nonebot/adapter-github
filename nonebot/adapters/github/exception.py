@@ -11,7 +11,6 @@ from nonebot.exception import AdapterException
 from githubkit.exception import RequestFailed, RequestTimeout
 from nonebot.exception import ActionFailed as BaseActionFailed
 from nonebot.exception import NetworkError as BaseNetworkError
-from nonebot.exception import ApiNotAvailable as BaseApiNotAvailable
 
 
 class GitHubAdapterException(AdapterException):
@@ -32,10 +31,6 @@ class NetworkError(BaseNetworkError, GitHubAdapterException):
 class ActionTimeout(RequestTimeout, NetworkError):
     def __repr__(self) -> str:
         return f"<NetworkError: {self.request.method} {self.request.url}>"
-
-
-class ApiNotAvailable(BaseApiNotAvailable, GitHubAdapterException):
-    ...
 
 
 class ActionFailed(RequestFailed, BaseActionFailed, GitHubAdapterException):
