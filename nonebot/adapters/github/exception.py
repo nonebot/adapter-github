@@ -25,17 +25,12 @@ class NetworkError(BaseNetworkError, GitHubAdapterException):
         """错误原因"""
 
     def __repr__(self):
-        return f"<NetWorkError message={self.msg}>"
+        return f"NetWorkError(message={self.msg!r})"
 
 
 class ActionTimeout(RequestTimeout, NetworkError):
-    def __repr__(self) -> str:
-        return f"<NetworkError: {self.request.method} {self.request.url}>"
+    ...
 
 
 class ActionFailed(RequestFailed, BaseActionFailed, GitHubAdapterException):
-    def __repr__(self) -> str:
-        return (
-            f"<ActionFailed: {self.response.raw_request.method} "
-            f"{self.response.raw_request.url}, status_code: {self.response.status_code}>"
-        )
+    ...
