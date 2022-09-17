@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot-adapter-github"
-version = "0.1.1"
+version = "0.1.2"
 description = "GitHub adapter for nonebot2"
 authors = ["yanyongyu <yyy@nonebot.dev>"]
 license = "MIT"
@@ -23,7 +23,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.8"
 nonebot2 = "^2.0.0-beta.5"
-githubkit = { version = "^0.6.1", extras = ["auth-app"] }
+githubkit = { version = ">=0.7.0,<1.0.0", extras = ["auth-app"] }
 
 [tool.poetry.group.dev.dependencies]
 isort = "^5.10.1"

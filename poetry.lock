@@ -142,7 +142,7 @@ testing = ["covdefaults (>=2.2)", "coverage (>=6.4.2)", "pytest (>=7.1.2)", "pyt
 
 [[package]]
 name = "githubkit"
-version = "0.6.2"
+version = "0.7.0"
 description = "GitHub SDK for Python"
 category = "main"
 optional = false
@@ -346,7 +346,7 @@ websockets = ["websockets (>=10.0,<11.0)"]
 type = "git"
 url = "https://github.com/nonebot/nonebot2.git"
 reference = "HEAD"
-resolved_reference = "248af2ae1a5430339cc59638aad16d0b79de6d54"
+resolved_reference = "638a9c94af080d4b640d134b09c01f612966cba2"
 
 [[package]]
 name = "nonemoji"
@@ -451,16 +451,16 @@ python-versions = "*"
 
 [[package]]
 name = "PyJWT"
-version = "2.4.0"
+version = "2.5.0"
 description = "JSON Web Token implementation in Python"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.extras]
-crypto = ["cryptography (>=3.3.1)"]
-dev = ["coverage[toml] (==5.0.4)", "cryptography (>=3.3.1)", "mypy", "pre-commit", "pytest (>=6.0.0,<7.0.0)", "sphinx", "sphinx-rtd-theme", "zope.interface"]
-docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
+crypto = ["cryptography (>=3.3.1)", "types-cryptography (>=3.3.21)"]
+dev = ["coverage[toml] (==5.0.4)", "cryptography (>=3.3.1)", "pre-commit", "pytest (>=6.0.0,<7.0.0)", "sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "types-cryptography (>=3.3.21)", "zope.interface"]
+docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
 tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
@@ -669,7 +669,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "c3019ff18e0e84b1bfc975d90cb15105f5744bfcc517cc4dcefe8e73d342ad4b"
+content-hash = "c9f0ceeee086419c7e088a41317131e02eefb819a4dbeec3a3da71bdd512eab6"
 
 [metadata.files]
 anyio = [
@@ -820,8 +820,8 @@ filelock = [
     {file = "filelock-3.8.0.tar.gz", hash = "sha256:55447caa666f2198c5b6b13a26d2084d26fa5b115c00d065664b2124680c4edc"},
 ]
 githubkit = [
-    {file = "GitHubKit-0.6.2.tar.gz", hash = "sha256:12d01cb876906950bc9c0b1d0a6e1d5ded23e7df5919a84eeaeee030195509df"},
-    {file = "githubkit-0.6.2-py3-none-any.whl", hash = "sha256:ff4d7ea115d37cefc5e48c80a785184d25807cb81f4bd6a9e55841a8bb435021"},
+    {file = "GitHubKit-0.7.0.tar.gz", hash = "sha256:726569a4226a43659dd55be1dfd4df69553f3b83be7c8416504701146236ac4e"},
+    {file = "githubkit-0.7.0-py3-none-any.whl", hash = "sha256:57d9aa5e2a168d43c839cb2f8a5838b6c5e7d825df79337f0619d38823bf3d92"},
 ]
 h11 = [
     {file = "h11-0.12.0-py3-none-any.whl", hash = "sha256:36a3cb8c0a032f56e2da7084577878a035d3b61d104230d4bd49c0c6b555a9c6"},
@@ -1079,8 +1079,8 @@ pygtrie = [
     {file = "pygtrie-2.5.0.tar.gz", hash = "sha256:203514ad826eb403dab1d2e2ddd034e0d1534bbe4dbe0213bb0593f66beba4e2"},
 ]
 PyJWT = [
-    {file = "PyJWT-2.4.0-py3-none-any.whl", hash = "sha256:72d1d253f32dbd4f5c88eaf1fdc62f3a19f676ccbadb9dbc5d07e951b2b26daf"},
-    {file = "PyJWT-2.4.0.tar.gz", hash = "sha256:d42908208c699b3b973cbeb01a969ba6a96c821eefb1c5bfe4c390c01d67abba"},
+    {file = "PyJWT-2.5.0-py3-none-any.whl", hash = "sha256:8d82e7087868e94dd8d7d418e5088ce64f7daab4b36db654cbaedb46f9d1ca80"},
+    {file = "PyJWT-2.5.0.tar.gz", hash = "sha256:e77ab89480905d86998442ac5788f35333fa85f65047a534adc38edf3c88fc3b"},
 ]
 python-dotenv = [
     {file = "python-dotenv-0.21.0.tar.gz", hash = "sha256:b77d08274639e3d34145dfa6c7008e66df0f04b7be7a75fd0d5292c191d79045"},
