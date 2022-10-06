@@ -182,7 +182,7 @@ class OAuthBot(Bot):
     async def as_user(self, token: str) -> AsyncGenerator[Self, None]:
         if self._ctx_github is not None:
             raise RuntimeError("Can not enter context twice.")
-        self._ctx_github = GitHub(TokenAuthStrategy(token))
+        self._ctx_github = self._github.with_auth(TokenAuthStrategy(token))
         async with self._ctx_github:
             try:
                 yield self
@@ -267,7 +267,7 @@ class GitHubBot(Bot):
     async def as_user(self, token: str) -> AsyncGenerator[Self, None]:
         if self._ctx_github is not None:
             raise RuntimeError("Can not enter context twice.")
-        self._ctx_github = GitHub(TokenAuthStrategy(token))
+        self._ctx_github = self._github.with_auth(TokenAuthStrategy(token))
         async with self._ctx_github:
             try:
                 yield self
