@@ -5,6 +5,7 @@ from .adapter import Adapter as Adapter
 from .bot import GitHubBot as GitHubBot
 from .message import Message as Message
 from .exception import ActionFailed as ActionFailed
+from .exception import GraphQLError as GraphQLError
 from .exception import NetworkError as NetworkError
 from .exception import ActionTimeout as ActionTimeout
 from .message import MessageSegment as MessageSegment

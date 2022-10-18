@@ -8,9 +8,9 @@ FrontMatter:
 from typing import Optional
 
 from nonebot.exception import AdapterException
-from githubkit.exception import RequestFailed, RequestTimeout
 from nonebot.exception import ActionFailed as BaseActionFailed
 from nonebot.exception import NetworkError as BaseNetworkError
+from githubkit.exception import GraphQLFailed, RequestFailed, RequestTimeout
 
 
 class GitHubAdapterException(AdapterException):
@@ -33,4 +33,8 @@ class ActionTimeout(RequestTimeout, NetworkError):
 
 
 class ActionFailed(RequestFailed, BaseActionFailed, GitHubAdapterException):
+    ...
+
+
+class GraphQLError(GraphQLFailed, BaseActionFailed, GitHubAdapterException):
     ...

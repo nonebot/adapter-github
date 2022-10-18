@@ -6,7 +6,7 @@ from typing import Any, Union, Callable, Optional, cast
 
 from nonebot.typing import overrides
 from githubkit.webhooks import verify
-from githubkit.exception import RequestFailed, RequestTimeout
+from githubkit.exception import GraphQLFailed, RequestFailed, RequestTimeout
 from nonebot.drivers import (
     URL,
     Driver,
@@ -23,7 +23,7 @@ from .event import Event, events
 from .bot import Bot, OAuthBot, GitHubBot
 from .message import Message, MessageSegment
 from .config import Config, OAuthApp, GitHubApp
-from .exception import ActionFailed, NetworkError, ActionTimeout
+from .exception import ActionFailed, GraphQLError, NetworkError, ActionTimeout
 
 
 class Adapter(BaseAdapter):
@@ -111,6 +111,8 @@ class Adapter(BaseAdapter):
             raise ActionFailed(e.response) from None
         except RequestTimeout as e:
             raise ActionTimeout(e.request) from None
+        except GraphQLFailed as e:
+            raise GraphQLError(e.response) from None
         except Exception as e:
             raise NetworkError(f"API request failed: {e!r}") from e
 
