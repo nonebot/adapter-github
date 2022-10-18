@@ -80,6 +80,7 @@ from githubkit.webhooks.models import PullRequestClosed as PullRequestClosedPayl
 from githubkit.webhooks.models import PullRequestEdited as PullRequestEditedPayload
 from githubkit.webhooks.models import PullRequestLocked as PullRequestLockedPayload
 from githubkit.webhooks.models import PullRequestOpened as PullRequestOpenedPayload
+from githubkit.webhooks.models import PullRequestQueued as PullRequestQueuedPayload
 from githubkit.webhooks.models import RepositoryCreated as RepositoryCreatedPayload
 from githubkit.webhooks.models import RepositoryDeleted as RepositoryDeletedPayload
 from githubkit.webhooks.models import RepositoryRenamed as RepositoryRenamedPayload
@@ -111,6 +112,7 @@ from githubkit.webhooks.models import OrganizationDeleted as OrganizationDeleted
 from githubkit.webhooks.models import OrganizationRenamed as OrganizationRenamedPayload
 from githubkit.webhooks.models import ProjectColumnEdited as ProjectColumnEditedPayload
 from githubkit.webhooks.models import PullRequestAssigned as PullRequestAssignedPayload
+from githubkit.webhooks.models import PullRequestDequeued as PullRequestDequeuedPayload
 from githubkit.webhooks.models import PullRequestReopened as PullRequestReopenedPayload
 from githubkit.webhooks.models import PullRequestUnlocked as PullRequestUnlockedPayload
 from githubkit.webhooks.models import (
@@ -244,6 +246,9 @@ from githubkit.webhooks.models import (
 )
 from githubkit.webhooks.models import (
     DiscussionCategoryChanged as DiscussionCategoryChangedPayload,
+)
+from githubkit.webhooks.models import (
+    MergeGroupChecksRequested as MergeGroupChecksRequestedPayload,
 )
 from githubkit.webhooks.models import (
     OrganizationMemberInvited as OrganizationMemberInvitedPayload,
@@ -847,6 +852,10 @@ class MembershipRemoved(Event):
     payload: MembershipRemovedPayload
 
 
+class MergeGroupChecksRequested(Event):
+    payload: MergeGroupChecksRequestedPayload
+
+
 class MetaDeleted(Event):
     payload: MetaDeletedPayload
 
@@ -1011,6 +1020,10 @@ class PullRequestConvertedToDraft(Event):
     payload: PullRequestConvertedToDraftPayload
 
 
+class PullRequestDequeued(Event):
+    payload: PullRequestDequeuedPayload
+
+
 class PullRequestEdited(Event):
     payload: PullRequestEditedPayload
 
@@ -1025,6 +1038,10 @@ class PullRequestLocked(Event):
 
 class PullRequestOpened(Event):
     payload: PullRequestOpenedPayload
+
+
+class PullRequestQueued(Event):
+    payload: PullRequestQueuedPayload
 
 
 class PullRequestReadyForReview(Event):
@@ -1443,6 +1460,9 @@ events = {
         "added": MembershipAdded,
         "removed": MembershipRemoved,
     },
+    "merge_group": {
+        "checks_requested": MergeGroupChecksRequested,
+    },
     "meta": {
         "deleted": MetaDeleted,
     },
@@ -1503,10 +1523,12 @@ events = {
         "auto_merge_enabled": PullRequestAutoMergeEnabled,
         "closed": PullRequestClosed,
         "converted_to_draft": PullRequestConvertedToDraft,
+        "dequeued": PullRequestDequeued,
         "edited": PullRequestEdited,
         "labeled": PullRequestLabeled,
         "locked": PullRequestLocked,
         "opened": PullRequestOpened,
+        "queued": PullRequestQueued,
         "ready_for_review": PullRequestReadyForReview,
         "reopened": PullRequestReopened,
         "review_request_removed": PullRequestReviewRequestRemoved,
