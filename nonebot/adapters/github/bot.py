@@ -1,4 +1,5 @@
 import re
+from contextvars import ContextVar
 from typing_extensions import Self
 from contextlib import asynccontextmanager
 from typing import (
@@ -132,14 +133,16 @@ class Bot(BaseBot):
         super().__init__(adapter, app.id)
         self.app = app
         self._github: GitHub
-        self._ctx_github: Optional[GitHub] = None
+        self._ctx_github: ContextVar[Optional[GitHub]] = ContextVar(
+            "ctx_github", default=None
+        )
 
     def __getattr__(self, name: str) -> APIContext:
         return APIContext(self, (name,))
 
     @property
     def github(self) -> GitHub:
-        return self._ctx_github or self._github
+        return self._ctx_github.get() or self._github
 
     async def handle_event(self, event: Event) -> None:
         await handle_event(self, event)
@@ -167,27 +170,29 @@ class OAuthBot(Bot):
     async def as_web_user(
         self, code: str, redirect_uri: Optional[str] = None
     ) -> AsyncGenerator[Self, None]:
-        if self._ctx_github is not None:
+        if self._ctx_github.get() is not None:
             raise RuntimeError("Can not enter context twice.")
-        self._ctx_github = self._github.with_auth(
-            self._github.auth.as_web_user(code, redirect_uri)
+        self._ctx_github.set(
+            g := self._github.with_auth(
+                self._github.auth.as_web_user(code, redirect_uri)
+            )
         )
-        async with self._ctx_github:
-            try:
+        try:
+            async with g:
                 yield self
-            finally:
-                self._ctx_github = None
+        finally:
+            self._ctx_github.set(None)
 
     @asynccontextmanager
     async def as_user(self, token: str) -> AsyncGenerator[Self, None]:
-        if self._ctx_github is not None:
+        if self._ctx_github.get() is not None:
             raise RuntimeError("Can not enter context twice.")
-        self._ctx_github = self._github.with_auth(TokenAuthStrategy(token))
-        async with self._ctx_github:
-            try:
+        self._ctx_github.set(g := self._github.with_auth(TokenAuthStrategy(token)))
+        try:
+            async with g:
                 yield self
-            finally:
-                self._ctx_github = None
+        finally:
+            self._ctx_github.set(None)
 
     @overrides(Bot)
     async def handle_event(self, event: Event) -> None:
@@ -218,14 +223,16 @@ class GitHubBot(Bot):
 
     @asynccontextmanager
     async def as_oauth_app(self) -> AsyncGenerator[Self, None]:
-        if self._ctx_github is not None:
+        if self._ctx_github.get() is not None:
             raise RuntimeError("Can not enter context twice.")
-        self._ctx_github = self._github.with_auth(self._github.auth.as_oauth_app())
-        async with self._ctx_github:
-            try:
+        self._ctx_github.set(
+            g := self._github.with_auth(self._github.auth.as_oauth_app())
+        )
+        try:
+            async with g:
                 yield self
-            finally:
-                self._ctx_github = None
+        finally:
+            self._ctx_github.set(None)
 
     @asynccontextmanager
     async def as_installation(
@@ -235,44 +242,48 @@ class GitHubBot(Bot):
         repository_ids: Union[Unset, List[int]] = UNSET,
         permissions: Union[Unset, "AppPermissionsType"] = UNSET,
     ) -> AsyncGenerator[Self, None]:
-        if self._ctx_github is not None:
+        if self._ctx_github.get() is not None:
             raise RuntimeError("Can not enter context twice.")
-        self._ctx_github = self._github.with_auth(
-            self._github.auth.as_installation(
-                installation_id, repositories, repository_ids, permissions
+        self._ctx_github.set(
+            g := self._github.with_auth(
+                self._github.auth.as_installation(
+                    installation_id, repositories, repository_ids, permissions
+                )
             )
         )
-        async with self._ctx_github:
-            try:
+        try:
+            async with g:
                 yield self
-            finally:
-                self._ctx_github = None
+        finally:
+            self._ctx_github.set(None)
 
     @asynccontextmanager
     async def as_web_user(
         self, code: str, redirect_uri: Optional[str] = None
     ) -> AsyncGenerator[Self, None]:
-        if self._ctx_github is not None:
+        if self._ctx_github.get() is not None:
             raise RuntimeError("Can not enter context twice.")
-        self._ctx_github = self._github.with_auth(
-            self._github.auth.as_oauth_app().as_web_user(code, redirect_uri)
+        self._ctx_github.set(
+            g := self._github.with_auth(
+                self._github.auth.as_oauth_app().as_web_user(code, redirect_uri)
+            )
         )
-        async with self._ctx_github:
-            try:
+        try:
+            async with g:
                 yield self
-            finally:
-                self._ctx_github = None
+        finally:
+            self._ctx_github.set(None)
 
     @asynccontextmanager
     async def as_user(self, token: str) -> AsyncGenerator[Self, None]:
-        if self._ctx_github is not None:
+        if self._ctx_github.get() is not None:
             raise RuntimeError("Can not enter context twice.")
-        self._ctx_github = self._github.with_auth(TokenAuthStrategy(token))
-        async with self._ctx_github:
-            try:
+        self._ctx_github.set(g := self._github.with_auth(TokenAuthStrategy(token)))
+        try:
+            async with g:
                 yield self
-            finally:
-                self._ctx_github = None
+        finally:
+            self._ctx_github.set(None)
 
     @overrides(Bot)
     async def handle_event(self, event: Event) -> None:
