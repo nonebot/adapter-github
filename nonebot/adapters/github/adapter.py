@@ -77,13 +77,13 @@ class Adapter(BaseAdapter):
         signature = request.headers.get("x-hub-signature-256")
         payload = request.content
 
-        if not event_id or not event_name or not signature or not payload:
+        if not event_id or not event_name or not payload:
             log("WARNING", "Received invalid GitHub Webhook request. Missing Header.")
             return Response(400, content="Invalid Request")
 
         # verify signature
-        if app.webhook_secret is not None and not verify(
-            app.webhook_secret, payload, signature
+        if app.webhook_secret is not None and not (
+            signature and verify(app.webhook_secret, payload, signature)
         ):
             log(
                 "WARNING",
