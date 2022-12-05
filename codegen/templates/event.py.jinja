@@ -35,13 +35,15 @@ class Event(BaseEvent):
         return escape_tag(
             f"{self.__class__.__name__} {self.id}"
             + (
-                f" from sender {sender.login}"
+                f" from sender {sender_name}"
                 if (sender := get_attr_or_item(self.payload, "sender"))
+                and (sender_name := get_attr_or_item(sender, "login"))
                 else ""
             )
             + (
-                f" in repository {repo.full_name}"
+                f" in repository {repo_name}"
                 if (repo := get_attr_or_item(self.payload, "repository"))
+                and (repo_name := get_attr_or_item(repo, "full_name"))
                 else ""
             )
         )
