@@ -408,14 +408,14 @@ class Event(BaseEvent):
     @overrides(BaseEvent)
     def get_event_description(self) -> str:
         return escape_tag(
-            f"{self.__class__.__name__} "
+            f"{self.__class__.__name__} {self.id}"
             + (
-                f"from sender {sender.login}"
+                f" from sender {sender.login}"
                 if (sender := get_attr_or_item(self.payload, "sender"))
                 else ""
             )
             + (
-                f"in repository {repo.full_name}"
+                f" in repository {repo.full_name}"
                 if (repo := get_attr_or_item(self.payload, "repository"))
                 else ""
             )
