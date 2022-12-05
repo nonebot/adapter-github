@@ -15,7 +15,7 @@ def escape(content: str) -> str:
 
 
 def get_attr_or_item(obj: Any, attr: str) -> Any:
-    with contextlib.suppress(TypeError):
+    with contextlib.suppress(TypeError, KeyError):
         return getattr(obj, attr, None) or obj[attr]
 
 
