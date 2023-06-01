@@ -1,6 +1,6 @@
 <!-- markdownlint-disable-next-line MD041 -->
 <p align="center">
-  <a href="https://v2.nonebot.dev/"><img src="https://raw.githubusercontent.com/nonebot/adapter-github/master/assets/logo.png" width="200" height="200" alt="nonebot"></a>
+  <a href="https://nonebot.dev/"><img src="https://raw.githubusercontent.com/nonebot/adapter-github/master/assets/logo.png" width="200" height="200" alt="nonebot"></a>
 </p>
 
 <div align="center">
