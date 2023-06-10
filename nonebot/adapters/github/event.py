@@ -80,7 +80,6 @@ from githubkit.webhooks.models import PullRequestClosed as PullRequestClosedPayl
 from githubkit.webhooks.models import PullRequestEdited as PullRequestEditedPayload
 from githubkit.webhooks.models import PullRequestLocked as PullRequestLockedPayload
 from githubkit.webhooks.models import PullRequestOpened as PullRequestOpenedPayload
-from githubkit.webhooks.models import PullRequestQueued as PullRequestQueuedPayload
 from githubkit.webhooks.models import RepositoryCreated as RepositoryCreatedPayload
 from githubkit.webhooks.models import RepositoryDeleted as RepositoryDeletedPayload
 from githubkit.webhooks.models import RepositoryRenamed as RepositoryRenamedPayload
@@ -99,6 +98,7 @@ from githubkit.webhooks.models import ReleasePrereleased as ReleasePrereleasedPa
 from githubkit.webhooks.models import ReleaseUnpublished as ReleaseUnpublishedPayload
 from githubkit.webhooks.models import RepositoryArchived as RepositoryArchivedPayload
 from githubkit.webhooks.models import SponsorshipCreated as SponsorshipCreatedPayload
+from githubkit.webhooks.models import WorkflowJobWaiting as WorkflowJobWaitingPayload
 from githubkit.webhooks.models import CheckRunRerequested as CheckRunRerequestedPayload
 from githubkit.webhooks.models import CheckSuiteCompleted as CheckSuiteCompletedPayload
 from githubkit.webhooks.models import CheckSuiteRequested as CheckSuiteRequestedPayload
@@ -113,10 +113,14 @@ from githubkit.webhooks.models import OrganizationRenamed as OrganizationRenamed
 from githubkit.webhooks.models import ProjectColumnEdited as ProjectColumnEditedPayload
 from githubkit.webhooks.models import PullRequestAssigned as PullRequestAssignedPayload
 from githubkit.webhooks.models import PullRequestDequeued as PullRequestDequeuedPayload
+from githubkit.webhooks.models import PullRequestEnqueued as PullRequestEnqueuedPayload
 from githubkit.webhooks.models import PullRequestReopened as PullRequestReopenedPayload
 from githubkit.webhooks.models import PullRequestUnlocked as PullRequestUnlockedPayload
 from githubkit.webhooks.models import (
     CommitCommentCreated as CommitCommentCreatedPayload,
+)
+from githubkit.webhooks.models import (
+    DependabotAlertFixed as DependabotAlertFixedPayload,
 )
 from githubkit.webhooks.models import (
     DiscussionUnanswered as DiscussionUnansweredPayload,
@@ -173,6 +177,9 @@ from githubkit.webhooks.models import (
     ProjectsV2ItemDeleted as ProjectsV2ItemDeletedPayload,
 )
 from githubkit.webhooks.models import (
+    PullRequestMilestoned as PullRequestMilestonedPayload,
+)
+from githubkit.webhooks.models import (
     PullRequestUnassigned as PullRequestUnassignedPayload,
 )
 from githubkit.webhooks.models import (
@@ -191,7 +198,13 @@ from githubkit.webhooks.models import (
     WorkflowJobInProgress as WorkflowJobInProgressPayload,
 )
 from githubkit.webhooks.models import (
+    WorkflowRunInProgress as WorkflowRunInProgressPayload,
+)
+from githubkit.webhooks.models import (
     CodeScanningAlertFixed as CodeScanningAlertFixedPayload,
+)
+from githubkit.webhooks.models import (
+    DependabotAlertCreated as DependabotAlertCreatedPayload,
 )
 from githubkit.webhooks.models import (
     ProjectsV2ItemArchived as ProjectsV2ItemArchivedPayload,
@@ -203,10 +216,16 @@ from githubkit.webhooks.models import (
     PullRequestSynchronize as PullRequestSynchronizePayload,
 )
 from githubkit.webhooks.models import (
+    RegistryPackageUpdated as RegistryPackageUpdatedPayload,
+)
+from githubkit.webhooks.models import (
     SponsorshipTierChanged as SponsorshipTierChangedPayload,
 )
 from githubkit.webhooks.models import (
     CheckRunRequestedAction as CheckRunRequestedActionPayload,
+)
+from githubkit.webhooks.models import (
+    DependabotAlertReopened as DependabotAlertReopenedPayload,
 )
 from githubkit.webhooks.models import (
     DeploymentStatusCreated as DeploymentStatusCreatedPayload,
@@ -224,6 +243,9 @@ from githubkit.webhooks.models import (
     ProjectsV2ItemReordered as ProjectsV2ItemReorderedPayload,
 )
 from githubkit.webhooks.models import (
+    PullRequestDemilestoned as PullRequestDemilestonedPayload,
+)
+from githubkit.webhooks.models import (
     PullRequestReviewEdited as PullRequestReviewEditedPayload,
 )
 from githubkit.webhooks.models import (
@@ -236,16 +258,25 @@ from githubkit.webhooks.models import (
     CodeScanningAlertCreated as CodeScanningAlertCreatedPayload,
 )
 from githubkit.webhooks.models import (
+    DependabotAlertDismissed as DependabotAlertDismissedPayload,
+)
+from githubkit.webhooks.models import (
     DiscussionCommentCreated as DiscussionCommentCreatedPayload,
 )
 from githubkit.webhooks.models import (
     DiscussionCommentDeleted as DiscussionCommentDeletedPayload,
 )
 from githubkit.webhooks.models import (
+    RegistryPackagePublished as RegistryPackagePublishedPayload,
+)
+from githubkit.webhooks.models import (
     CodeScanningAlertReopened as CodeScanningAlertReopenedPayload,
 )
 from githubkit.webhooks.models import (
     DiscussionCategoryChanged as DiscussionCategoryChangedPayload,
+)
+from githubkit.webhooks.models import (
+    InstallationTargetRenamed as InstallationTargetRenamedPayload,
 )
 from githubkit.webhooks.models import (
     MergeGroupChecksRequested as MergeGroupChecksRequestedPayload,
@@ -287,10 +318,16 @@ from githubkit.webhooks.models import (
     SecretScanningAlertCreated as SecretScanningAlertCreatedPayload,
 )
 from githubkit.webhooks.models import (
+    SecretScanningAlertRevoked as SecretScanningAlertRevokedPayload,
+)
+from githubkit.webhooks.models import (
     BranchProtectionRuleCreated as BranchProtectionRuleCreatedPayload,
 )
 from githubkit.webhooks.models import (
     BranchProtectionRuleDeleted as BranchProtectionRuleDeletedPayload,
+)
+from githubkit.webhooks.models import (
+    DependabotAlertReintroduced as DependabotAlertReintroducedPayload,
 )
 from githubkit.webhooks.models import (
     PullRequestAutoMergeEnabled as PullRequestAutoMergeEnabledPayload,
@@ -357,6 +394,9 @@ from githubkit.webhooks.models import (
     CodeScanningAlertAppearedInBranch as CodeScanningAlertAppearedInBranchPayload,
 )
 from githubkit.webhooks.models import (
+    DeploymentProtectionRuleRequested as DeploymentProtectionRuleRequestedPayload,
+)
+from githubkit.webhooks.models import (
     PullRequestReviewThreadUnresolved as PullRequestReviewThreadUnresolvedPayload,
 )
 from githubkit.webhooks.models import (
@@ -367,6 +407,9 @@ from githubkit.webhooks.models import (
 )
 from githubkit.webhooks.models import (
     RepositoryVulnerabilityAlertReopen as RepositoryVulnerabilityAlertReopenPayload,
+)
+from githubkit.webhooks.models import (
+    SecretScanningAlertLocationCreated as SecretScanningAlertLocationCreatedPayload,
 )
 from githubkit.webhooks.models import (
     PullRequestReviewRequestRemovedOneof0,
@@ -577,6 +620,26 @@ class CommitCommentCreated(Event):
         keep_untouched = (cached_property,)
 
 
+class DependabotAlertCreated(Event):
+    payload: DependabotAlertCreatedPayload
+
+
+class DependabotAlertDismissed(Event):
+    payload: DependabotAlertDismissedPayload
+
+
+class DependabotAlertFixed(Event):
+    payload: DependabotAlertFixedPayload
+
+
+class DependabotAlertReintroduced(Event):
+    payload: DependabotAlertReintroducedPayload
+
+
+class DependabotAlertReopened(Event):
+    payload: DependabotAlertReopenedPayload
+
+
 class DeployKeyCreated(Event):
     payload: DeployKeyCreatedPayload
 
@@ -587,6 +650,10 @@ class DeployKeyDeleted(Event):
 
 class DeploymentCreated(Event):
     payload: DeploymentCreatedPayload
+
+
+class DeploymentProtectionRuleRequested(Event):
+    payload: DeploymentProtectionRuleRequestedPayload
 
 
 class DeploymentStatusCreated(Event):
@@ -687,6 +754,10 @@ class InstallationRepositoriesAdded(Event):
 
 class InstallationRepositoriesRemoved(Event):
     payload: InstallationRepositoriesRemovedPayload
+
+
+class InstallationTargetRenamed(Event):
+    payload: InstallationTargetRenamedPayload
 
 
 class IssueCommentCreated(Event):
@@ -1022,12 +1093,20 @@ class PullRequestConvertedToDraft(Event):
     payload: PullRequestConvertedToDraftPayload
 
 
+class PullRequestDemilestoned(Event):
+    payload: PullRequestDemilestonedPayload
+
+
 class PullRequestDequeued(Event):
     payload: PullRequestDequeuedPayload
 
 
 class PullRequestEdited(Event):
     payload: PullRequestEditedPayload
+
+
+class PullRequestEnqueued(Event):
+    payload: PullRequestEnqueuedPayload
 
 
 class PullRequestLabeled(Event):
@@ -1038,12 +1117,12 @@ class PullRequestLocked(Event):
     payload: PullRequestLockedPayload
 
 
+class PullRequestMilestoned(Event):
+    payload: PullRequestMilestonedPayload
+
+
 class PullRequestOpened(Event):
     payload: PullRequestOpenedPayload
-
-
-class PullRequestQueued(Event):
-    payload: PullRequestQueuedPayload
 
 
 class PullRequestReadyForReview(Event):
@@ -1149,6 +1228,14 @@ class PullRequestReviewThreadUnresolved(Event):
     payload: PullRequestReviewThreadUnresolvedPayload
 
 
+class RegistryPackagePublished(Event):
+    payload: RegistryPackagePublishedPayload
+
+
+class RegistryPackageUpdated(Event):
+    payload: RegistryPackageUpdatedPayload
+
+
 class ReleaseCreated(Event):
     payload: ReleaseCreatedPayload
 
@@ -1241,6 +1328,14 @@ class SecretScanningAlertResolved(Event):
     payload: SecretScanningAlertResolvedPayload
 
 
+class SecretScanningAlertRevoked(Event):
+    payload: SecretScanningAlertRevokedPayload
+
+
+class SecretScanningAlertLocationCreated(Event):
+    payload: SecretScanningAlertLocationCreatedPayload
+
+
 class SecurityAdvisoryPerformed(Event):
     payload: SecurityAdvisoryPerformedPayload
 
@@ -1325,8 +1420,16 @@ class WorkflowJobQueued(Event):
     payload: WorkflowJobQueuedPayload
 
 
+class WorkflowJobWaiting(Event):
+    payload: WorkflowJobWaitingPayload
+
+
 class WorkflowRunCompleted(Event):
     payload: WorkflowRunCompletedPayload
+
+
+class WorkflowRunInProgress(Event):
+    payload: WorkflowRunInProgressPayload
 
 
 class WorkflowRunRequested(Event):
@@ -1374,12 +1477,22 @@ events = {
     "commit_comment": {
         "created": CommitCommentCreated,
     },
+    "dependabot_alert": {
+        "created": DependabotAlertCreated,
+        "dismissed": DependabotAlertDismissed,
+        "fixed": DependabotAlertFixed,
+        "reintroduced": DependabotAlertReintroduced,
+        "reopened": DependabotAlertReopened,
+    },
     "deploy_key": {
         "created": DeployKeyCreated,
         "deleted": DeployKeyDeleted,
     },
     "deployment": {
         "created": DeploymentCreated,
+    },
+    "deployment_protection_rule": {
+        "requested": DeploymentProtectionRuleRequested,
     },
     "deployment_status": {
         "created": DeploymentStatusCreated,
@@ -1417,6 +1530,9 @@ events = {
     "installation_repositories": {
         "added": InstallationRepositoriesAdded,
         "removed": InstallationRepositoriesRemoved,
+    },
+    "installation_target": {
+        "renamed": InstallationTargetRenamed,
     },
     "issue_comment": {
         "created": IssueCommentCreated,
@@ -1525,12 +1641,14 @@ events = {
         "auto_merge_enabled": PullRequestAutoMergeEnabled,
         "closed": PullRequestClosed,
         "converted_to_draft": PullRequestConvertedToDraft,
+        "demilestoned": PullRequestDemilestoned,
         "dequeued": PullRequestDequeued,
         "edited": PullRequestEdited,
+        "enqueued": PullRequestEnqueued,
         "labeled": PullRequestLabeled,
         "locked": PullRequestLocked,
+        "milestoned": PullRequestMilestoned,
         "opened": PullRequestOpened,
-        "queued": PullRequestQueued,
         "ready_for_review": PullRequestReadyForReview,
         "reopened": PullRequestReopened,
         "review_request_removed": PullRequestReviewRequestRemoved,
@@ -1553,6 +1671,10 @@ events = {
     "pull_request_review_thread": {
         "resolved": PullRequestReviewThreadResolved,
         "unresolved": PullRequestReviewThreadUnresolved,
+    },
+    "registry_package": {
+        "published": RegistryPackagePublished,
+        "updated": RegistryPackageUpdated,
     },
     "release": {
         "created": ReleaseCreated,
@@ -1584,6 +1706,10 @@ events = {
         "created": SecretScanningAlertCreated,
         "reopened": SecretScanningAlertReopened,
         "resolved": SecretScanningAlertResolved,
+        "revoked": SecretScanningAlertRevoked,
+    },
+    "secret_scanning_alert_location": {
+        "created": SecretScanningAlertLocationCreated,
     },
     "security_advisory": {
         "performed": SecurityAdvisoryPerformed,
@@ -1617,9 +1743,11 @@ events = {
         "completed": WorkflowJobCompleted,
         "in_progress": WorkflowJobInProgress,
         "queued": WorkflowJobQueued,
+        "waiting": WorkflowJobWaiting,
     },
     "workflow_run": {
         "completed": WorkflowRunCompleted,
+        "in_progress": WorkflowRunInProgress,
         "requested": WorkflowRunRequested,
     },
 }
