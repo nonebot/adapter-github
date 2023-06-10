@@ -8,6 +8,8 @@ from typing import (
     Dict,
     List,
     Union,
+    Generic,
+    TypeVar,
     Callable,
     Optional,
     AsyncGenerator,
@@ -16,7 +18,13 @@ from typing import (
 from nonebot.typing import overrides
 from githubkit.utils import UNSET, Unset
 from nonebot.message import handle_event
-from githubkit import GitHub, AppAuthStrategy, TokenAuthStrategy, OAuthAppAuthStrategy
+from githubkit import (
+    GitHub,
+    AppAuthStrategy,
+    BaseAuthStrategy,
+    TokenAuthStrategy,
+    OAuthAppAuthStrategy,
+)
 
 from nonebot.adapters import Bot as BaseBot
 
@@ -30,6 +38,9 @@ if TYPE_CHECKING:
     from githubkit.rest.types import AppPermissionsType
 
     from .adapter import Adapter
+
+
+A = TypeVar("A", bound=BaseAuthStrategy)
 
 
 def _check_at_me(bot: "GitHubBot", event: Event) -> None:
@@ -113,7 +124,7 @@ async def send(
     )
 
 
-class Bot(BaseBot):
+class Bot(BaseBot, Generic[A]):
     adapter: "Adapter"
 
     send_handler: Callable[
@@ -132,7 +143,7 @@ class Bot(BaseBot):
     def __init__(self, adapter: "Adapter", app: Union[GitHubApp, OAuthApp]):
         super().__init__(adapter, app.id)
         self.app = app
-        self._github: GitHub
+        self._github: GitHub[A]
         self._ctx_github: ContextVar[Optional[GitHub]] = ContextVar(
             "ctx_github", default=None
         )
@@ -154,11 +165,11 @@ class Bot(BaseBot):
         return await self.__class__.send_handler(self, event, message)
 
 
-class OAuthBot(Bot):
+class OAuthBot(Bot[OAuthAppAuthStrategy]):
     @overrides(Bot)
     def __init__(self, adapter: "Adapter", app: OAuthApp):
         super().__init__(adapter, app)
-        self._github: GitHub[OAuthAppAuthStrategy] = GitHub(
+        self._github = GitHub(
             OAuthAppAuthStrategy(app.client_id, app.client_secret),
             base_url=self.adapter.github_config.github_base_url,
             accept_format=self.adapter.github_config.github_accept_format,
@@ -200,11 +211,11 @@ class OAuthBot(Bot):
         await super().handle_event(event)
 
 
-class GitHubBot(Bot):
+class GitHubBot(Bot[AppAuthStrategy]):
     @overrides(Bot)
     def __init__(self, adapter: "Adapter", app: GitHubApp):
         super().__init__(adapter, app)
-        self._github: GitHub[AppAuthStrategy] = GitHub(
+        self._github = GitHub(
             AppAuthStrategy(
                 app.app_id, app.private_key, app.client_id, app.client_secret
             ),
