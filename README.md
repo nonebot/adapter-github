@@ -73,7 +73,7 @@ GITHUB_APPS='
     "app_id": "123456",  # GitHub App ID 必填
     "private_key": [
       "-----BEGIN RSA PRIVATE KEY-----",
-      "...", # 将 Key 按行输入
+      "...",  # 将私钥按行输入
       "...",
       "...",
       "-----END RSA PRIVATE KEY-----"
