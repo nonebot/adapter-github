@@ -89,7 +89,7 @@ GITHUB_APPS='
 
 ```dotenv
 GITHUB_BASE_URL=https://api.github.com
-GITHUB_ACCEPR_FORMAT=full+json
+GITHUB_ACCEPT_FORMAT=full+json
 GITHUB_PREVIEWS=["starfox"]
 ```
 
