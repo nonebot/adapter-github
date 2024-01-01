@@ -1,5 +1,5 @@
-from .event import *
 from .bot import Bot as Bot
+from .event import *  # noqa: F403
 from .bot import OAuthBot as OAuthBot
 from .adapter import Adapter as Adapter
 from .bot import GitHubBot as GitHubBot

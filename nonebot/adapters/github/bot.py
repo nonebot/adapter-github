@@ -127,17 +127,16 @@ async def send(
 class Bot(BaseBot, Generic[A]):
     adapter: "Adapter"
 
-    send_handler: Callable[
-        ["Bot", Event, Union[str, Message, MessageSegment]], Any
-    ] = send
+    send_handler: Callable[["Bot", Event, Union[str, Message, MessageSegment]], Any] = (
+        send
+    )
 
     if TYPE_CHECKING:
         rest: RestNamespace
 
         async def async_graphql(
             self, query: str, variables: Optional[Dict[str, Any]] = None
-        ) -> Dict[str, Any]:
-            ...
+        ) -> Dict[str, Any]: ...
 
     @overrides(BaseBot)
     def __init__(self, adapter: "Adapter", app: Union[GitHubApp, OAuthApp]):

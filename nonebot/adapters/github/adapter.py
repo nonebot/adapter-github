@@ -42,7 +42,8 @@ class Adapter(BaseAdapter):
         if not isinstance(self.driver, ReverseDriver):
             log(
                 "WARNING",
-                f"Current driver {self.config.driver} is not a ReverseDriver. GitHub Webhook disabled.",
+                f"Current driver {self.config.driver} is not a ReverseDriver. GitHub"
+                " Webhook disabled.",
             )
 
         for app in self.github_config.github_apps:
@@ -125,23 +126,23 @@ class Adapter(BaseAdapter):
             types = events.get(event_name)
             if isinstance(types, dict):
                 if action := event_payload.get("action"):
-                    return types[action].parse_obj(
-                        {"id": event_id, "name": event_name, "payload": event_payload}
-                    )
+                    return types[action].parse_obj({
+                        "id": event_id, "name": event_name, "payload": event_payload
+                    })
                 else:
                     raise ValueError(
                         f"Payload missing action, either of {', '.join(types)}."
                     )
             elif types is None:
                 raise ValueError(f"Unknown event type {event_name}.")
-            return types.parse_obj(
-                {"id": event_id, "name": event_name, "payload": event_payload}
-            )
+            return types.parse_obj({
+                "id": event_id, "name": event_name, "payload": event_payload
+            })
         except Exception as e:
             log("WARNING", f"Failed to parse webhook payload {event_id}", e)
-            return Event.parse_obj(
-                {"id": event_id, "name": event_name, "payload": event_payload}
-            )
+            return Event.parse_obj({
+                "id": event_id, "name": event_name, "payload": event_payload
+            })
 
     @classmethod
     def custom_send(

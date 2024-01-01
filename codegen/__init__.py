@@ -59,7 +59,9 @@ def build_event():
                 events.append(
                     Data(
                         pascal_case(event, action),
-                        f"Union[{', '.join(model.__name__ for model in get_args(type))}]",
+                        "Union["
+                        f"{', '.join(model.__name__ for model in get_args(type))}"
+                        "]",
                     )
                 )
                 action_types[action] = pascal_case(event, action)
