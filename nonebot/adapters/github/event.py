@@ -261,6 +261,12 @@ from githubkit.webhooks.models import (
     DependabotAlertDismissed as DependabotAlertDismissedPayload,
 )
 from githubkit.webhooks.models import (
+    DeploymentReviewApproved as DeploymentReviewApprovedPayload,
+)
+from githubkit.webhooks.models import (
+    DeploymentReviewRejected as DeploymentReviewRejectedPayload,
+)
+from githubkit.webhooks.models import (
     DiscussionCommentCreated as DiscussionCommentCreatedPayload,
 )
 from githubkit.webhooks.models import (
@@ -271,6 +277,9 @@ from githubkit.webhooks.models import (
 )
 from githubkit.webhooks.models import (
     CodeScanningAlertReopened as CodeScanningAlertReopenedPayload,
+)
+from githubkit.webhooks.models import (
+    DeploymentReviewRequested as DeploymentReviewRequestedPayload,
 )
 from githubkit.webhooks.models import (
     DiscussionCategoryChanged as DiscussionCategoryChangedPayload,
@@ -654,6 +663,18 @@ class DeploymentCreated(Event):
 
 class DeploymentProtectionRuleRequested(Event):
     payload: DeploymentProtectionRuleRequestedPayload
+
+
+class DeploymentReviewApproved(Event):
+    payload: DeploymentReviewApprovedPayload
+
+
+class DeploymentReviewRejected(Event):
+    payload: DeploymentReviewRejectedPayload
+
+
+class DeploymentReviewRequested(Event):
+    payload: DeploymentReviewRequestedPayload
 
 
 class DeploymentStatusCreated(Event):
@@ -1493,6 +1514,11 @@ events = {
     },
     "deployment_protection_rule": {
         "requested": DeploymentProtectionRuleRequested,
+    },
+    "deployment_review": {
+        "approved": DeploymentReviewApproved,
+        "rejected": DeploymentReviewRejected,
+        "requested": DeploymentReviewRequested,
     },
     "deployment_status": {
         "created": DeploymentStatusCreated,
