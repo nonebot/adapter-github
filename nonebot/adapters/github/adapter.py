@@ -2,8 +2,9 @@ import json
 import asyncio
 import inspect
 from functools import partial
-from typing import Any, Union, Callable, Optional, cast
+from typing import Any, Type, Union, Callable, Optional, cast
 
+from pydantic import parse_obj_as
 from nonebot.typing import overrides
 from githubkit.webhooks import verify
 from githubkit.exception import GraphQLFailed, RequestFailed, RequestTimeout
@@ -18,12 +19,17 @@ from nonebot.drivers import (
 
 from nonebot.adapters import Adapter as BaseAdapter
 
+from . import event
 from .utils import log
 from .event import Event, events
 from .bot import Bot, OAuthBot, GitHubBot
 from .message import Message, MessageSegment
 from .config import Config, OAuthApp, GitHubApp
 from .exception import ActionFailed, GraphQLError, NetworkError, ActionTimeout
+
+
+def import_event_model(event_name: str) -> Type[Event]:
+    return getattr(event, event_name)
 
 
 class Adapter(BaseAdapter):
@@ -126,8 +132,13 @@ class Adapter(BaseAdapter):
             types = events.get(event_name)
             if isinstance(types, dict):
                 if action := event_payload.get("action"):
-                    return types[action].parse_obj(
-                        {"id": event_id, "name": event_name, "payload": event_payload}
+                    return parse_obj_as(
+                        import_event_model(types[action]),
+                        {
+                            "id": event_id,
+                            "name": event_name,
+                            "payload": event_payload,
+                        },
                     )
                 else:
                     raise ValueError(
@@ -135,8 +146,9 @@ class Adapter(BaseAdapter):
                     )
             elif types is None:
                 raise ValueError(f"Unknown event type {event_name}.")
-            return types.parse_obj(
-                {"id": event_id, "name": event_name, "payload": event_payload}
+            return parse_obj_as(
+                import_event_model(types),
+                {"id": event_id, "name": event_name, "payload": event_payload},
             )
         except Exception as e:
             log("WARNING", f"Failed to parse webhook payload {event_id}", e)

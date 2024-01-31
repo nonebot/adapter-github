@@ -1,0 +1,26 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ._base import Event as Event
+    from ._types import events as events
+    {% for event, actions in types.items() %}
+    {% for action in actions %}
+    from .{{ event }} import {{ action.class_name }} as {{ action.class_name }}
+    {% endfor %}
+    {% endfor %}
+else:
+    __lazy_vars__ = {
+        {% for event, actions in types.items() %}
+        ".{{ event }}": (
+            {% for action in actions %}
+            "{{ action.class_name }}",
+            {% endfor %}
+        ),
+        {% endfor %}
+        "._base": (
+            "Event",
+        ),
+        "._types": (
+            "events",
+        )
+    }

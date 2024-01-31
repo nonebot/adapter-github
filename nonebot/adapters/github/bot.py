@@ -34,8 +34,8 @@ from .event import Event, CommitCommentCreated
 from .utils import APIContext, get_attr_or_item
 
 if TYPE_CHECKING:
-    from githubkit.rest import RestNamespace
-    from githubkit.rest.types import AppPermissionsType
+    from githubkit.versions.rest import RestVersionSwitcher
+    from githubkit.versions.latest.types import AppPermissionsType
 
     from .adapter import Adapter
 
@@ -132,7 +132,7 @@ class Bot(BaseBot, Generic[A]):
     )
 
     if TYPE_CHECKING:
-        rest: RestNamespace
+        rest: RestVersionSwitcher
 
         async def async_graphql(
             self, query: str, variables: Optional[Dict[str, Any]] = None

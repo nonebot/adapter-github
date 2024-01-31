@@ -1,0 +1,13 @@
+events = {
+    {% for event, actions in types.items() %}
+    {% if (actions | first).action %}
+    "{{ event }}": {
+        {% for action in actions %}
+        "{{ action.action }}": "{{ action.class_name }}",
+        {% endfor %}
+    },
+    {% else %}
+    "{{ event }}": "{{ (actions | first).class_name }}",
+    {% endif %}
+    {% endfor %}
+}

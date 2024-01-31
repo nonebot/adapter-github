@@ -1,12 +1,14 @@
+import shutil
 import inspect
 from pathlib import Path
 from itertools import chain
+from typing import Union, cast
 from dataclasses import dataclass
-from typing import Dict, List, Union, get_args, get_origin
+from typing_extensions import get_args, get_origin
 
+from githubkit import GitHubModel
 from jinja2 import Environment, PackageLoader
-from githubkit.webhooks.models import GitHubWebhookModel
-from githubkit.webhooks.types import webhook_action_types
+from githubkit.versions.latest.webhooks import webhook_action_types
 
 MESSAGE_EVENTS = {
     "CommitCommentCreated",
@@ -26,8 +28,9 @@ HAS_MESSAGE_EVENTS = {
 
 @dataclass
 class Data:
+    action: str | None
     class_name: str
-    payload_type: str
+    payload_types: list[str]
 
 
 def pascal_case(*names: str) -> str:
@@ -36,43 +39,72 @@ def pascal_case(*names: str) -> str:
 
 
 def build_event():
-    imports: List[str] = []
-    events: List[Data] = []
-    event_types: Dict[str, Union[str, Dict[str, str]]] = {}
+    event_types: dict[str, list[Data]] = {}
     for event, types in webhook_action_types.items():
+        # event has no sub action
         if not isinstance(types, dict):
-            imports.append(f"{types.__name__} as {types.__name__}Payload")
-            events.append(Data(types.__name__, f"{types.__name__}Payload"))
-            event_types[event] = types.__name__
+            types = cast(type[GitHubModel], types)
+            event_types[event] = [
+                Data(
+                    None,
+                    types.__name__.removeprefix("Webhook"),
+                    [types.__name__],
+                )
+            ]
             continue
 
-        action_types: Dict[str, str] = {}
+        action_types: list[Data] = []
         event_types[event] = action_types
-        for action, type in types.items():
-            if inspect.isclass(type) and issubclass(type, GitHubWebhookModel):
-                imports.append(f"{type.__name__} as {type.__name__}Payload")
-                events.append(Data(type.__name__, f"{type.__name__}Payload"))
-                action_types[action] = type.__name__
-            else:
-                assert get_origin(type) is Union
-                imports.extend(model.__name__ for model in get_args(type))
-                events.append(
+        for action, model in types.items():
+            # action type is a simple model
+            if inspect.isclass(model) and issubclass(model, GitHubModel):
+                action_types.append(
                     Data(
-                        pascal_case(event, action),
-                        "Union["
-                        f"{', '.join(model.__name__ for model in get_args(type))}"
-                        "]",
+                        action, model.__name__.removeprefix("Webhook"), [model.__name__]
                     )
                 )
-                action_types[action] = pascal_case(event, action)
+            # action type is a union of models
+            else:
+                assert get_origin(model) is Union
+                action_types.append(
+                    Data(
+                        action,
+                        pascal_case(event, action),
+                        [model.__name__ for model in get_args(model)],
+                    )
+                )
+
+    output_dir = Path("./nonebot/adapters/github/event/")
+
+    if output_dir.exists():
+        shutil.rmtree(output_dir)
+
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     env = Environment(loader=PackageLoader("codegen"))
+
+    # generate base model
+    template = env.get_template("_base.py.jinja")
+    base_text = template.render()
+    (output_dir / "_base.py").write_text(base_text)
+
+    # generate types
+    template = env.get_template("_types.py.jinja")
+    types_text = template.render(types=event_types)
+    (output_dir / "_types.py").write_text(types_text)
+
+    # generate event models
     template = env.get_template("event.py.jinja")
-    event_text = template.render(
-        imports=imports,
-        events=events,
-        types=event_types,
-        message_events=MESSAGE_EVENTS,
-        has_message_events=HAS_MESSAGE_EVENTS,
-    )
-    Path("./nonebot/adapters/github/event.py").write_text(event_text)
+    for event, actions in event_types.items():
+        event_text = template.render(
+            event=event,
+            actions=actions,
+            message_events=MESSAGE_EVENTS,
+            has_message_events=HAS_MESSAGE_EVENTS,
+        )
+        (output_dir / f"{event}.py").write_text(event_text)
+
+    # generate init file
+    template = env.get_template("__init__.py.jinja")
+    init_text = template.render(types=event_types)
+    (output_dir / "__init__.py").write_text(init_text)

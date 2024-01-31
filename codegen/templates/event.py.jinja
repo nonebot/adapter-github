@@ -1,90 +1,38 @@
-from typing import Any, Dict, Union
+from typing import Union
 from functools import cached_property
+from typing_extensions import override
 
-{% for import_ in imports %}
-from githubkit.webhooks.models import {{ import_ }}
+{% for action in actions %}
+{% for model in action.payload_types %}
+from githubkit.versions.latest.models import {{ model }}
 {% endfor %}
-from nonebot.typing import overrides
-from nonebot.utils import escape_tag
+{% endfor %}
 
-from nonebot.adapters import Event as BaseEvent
+from ..message import Message
 
-from .message import Message
-from .utils import get_attr_or_item
+from ._base import Event
 
+{% for action in actions %}
 
-class Event(BaseEvent):
-    id: str
-    name: str
-    payload: Dict[str, Any]
+class {{ action.class_name }}(Event):
+    {% if action.payload_types | length > 1 %}
+    payload: Union[{{ action.payload_types | join(", ") }}]
+    {% else %}
+    payload: {{ action.payload_types | first }}
+    {% endif %}
 
-    to_me: bool = False
-
-    @overrides(BaseEvent)
-    def get_type(self) -> str:
-        return "notice"
-
-    @overrides(BaseEvent)
-    def get_event_name(self) -> str:
-        return self.name + (
-            f".{action}" if (action := get_attr_or_item(self.payload, "action")) else ""
-        )
-
-    @overrides(BaseEvent)
-    def get_event_description(self) -> str:
-        return escape_tag(
-            f"{self.__class__.__name__} {self.id}"
-            + (
-                f" from sender {sender_name}"
-                if (sender := get_attr_or_item(self.payload, "sender"))
-                and (sender_name := get_attr_or_item(sender, "login"))
-                else ""
-            )
-            + (
-                f" in repository {repo_name}"
-                if (repo := get_attr_or_item(self.payload, "repository"))
-                and (repo_name := get_attr_or_item(repo, "full_name"))
-                else ""
-            )
-        )
-
-    @overrides(BaseEvent)
-    def get_message(self) -> Message:
-        raise ValueError("Event has no message!")
-
-    @overrides(BaseEvent)
-    def get_user_id(self) -> str:
-        if sender := get_attr_or_item(self.payload, "sender"):
-            return sender.login
-        raise ValueError("Event has no context!")
-
-    @overrides(BaseEvent)
-    def get_session_id(self) -> str:
-        return self.get_user_id()
-
-    @overrides(BaseEvent)
-    def is_tome(self) -> bool:
-        return self.to_me
-
-
-{% for event in events %}
-
-class {{ event.class_name }}(Event):
-    payload: {{ event.payload_type }}
-
-    {% if event.class_name in message_events %}
-    @overrides(Event)
+    {% if action.class_name in message_events %}
+    @override
     def get_type(self) -> str:
         return "message"
     {% endif %}
 
-    {% if event.class_name in has_message_events %}
+    {% if action.class_name in has_message_events %}
     @cached_property
     def _message(self):
         return Message(self.payload.comment.body)
 
-
-    @overrides(Event)
+    @override
     def get_message(self):
         return self._message
 
@@ -93,17 +41,3 @@ class {{ event.class_name }}(Event):
 
     {% endif %}
 {% endfor %}
-
-events = {
-    {% for event, types in types.items() %}
-    {% if types is mapping %}
-    "{{ event }}": {
-        {% for action, type in types.items() %}
-        "{{ action }}": {{ type }},
-        {% endfor %}
-    },
-    {% else %}
-    "{{ event }}": {{ types }},
-    {% endif %}
-    {% endfor %}
-}

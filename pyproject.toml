@@ -21,7 +21,7 @@ packages = [{ include = "nonebot" }]
 [tool.poetry.dependencies]
 python = "^3.8"
 nonebot2 = "^2.0.0-beta.5"
-githubkit = { version = ">=0.10.5,<0.11.0", extras = ["auth-app"] }
+githubkit = { version = ">=0.11.0,<0.12.0", extras = ["auth-app"] }
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.1.9"
@@ -55,16 +55,15 @@ line-length = 88
 target-version = "py38"
 
 [tool.ruff.extend-per-file-ignores]
-"nonebot/adapters/github/event.py" = ["E501"]
+"nonebot/adapters/github/event/*" = ["E501"]
 
 [tool.pyright]
-pythonVersion = "3.8"
 pythonPlatform = "All"
 executionEnvironments = [
   { root = "./codegen", pythonVersion = "3.10", extraPaths = [
     "./",
   ] },
-  { root = "./" },
+  { root = "./", pythonVersion = "3.8" },
 ]
 
 typeCheckingMode = "basic"
