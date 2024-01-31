@@ -36,7 +36,7 @@ class Adapter(BaseAdapter):
     @overrides(BaseAdapter)
     def __init__(self, driver: Driver, **kwargs: Any):
         super().__init__(driver, **kwargs)
-        self.github_config = Config.parse_obj(self.config)
+        self.github_config = Config.parse_obj(dict(self.config))
         self._setup()
 
     @classmethod
