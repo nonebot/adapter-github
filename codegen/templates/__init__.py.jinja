@@ -5,17 +5,17 @@ if TYPE_CHECKING:
     from ._types import events as events
     {% for event, actions in types.items() %}
     {% for action in actions %}
-    from .{{ event }} import {{ action.class_name }} as {{ action.class_name }}
+    from .{{ filename(event, action) }} import {{ action.class_name }} as {{ action.class_name }}
     {% endfor %}
     {% endfor %}
 else:
     __lazy_vars__ = {
         {% for event, actions in types.items() %}
-        ".{{ event }}": (
-            {% for action in actions %}
+        {% for action in actions %}
+        ".{{ filename(event, action) }}": (
             "{{ action.class_name }}",
-            {% endfor %}
         ),
+        {% endfor %}
         {% endfor %}
         "._base": (
             "Event",

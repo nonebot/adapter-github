@@ -2,17 +2,13 @@ from typing import Union
 from functools import cached_property
 from typing_extensions import override
 
-{% for action in actions %}
 {% for model in action.payload_types %}
 from githubkit.versions.latest.models import {{ model }}
-{% endfor %}
 {% endfor %}
 
 from ..message import Message
 
 from ._base import Event
-
-{% for action in actions %}
 
 class {{ action.class_name }}(Event):
     {% if action.payload_types | length > 1 %}
@@ -40,4 +36,3 @@ class {{ action.class_name }}(Event):
         keep_untouched = (cached_property,)
 
     {% endif %}
-{% endfor %}

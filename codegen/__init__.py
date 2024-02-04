@@ -33,6 +33,10 @@ class Data:
     payload_types: list[str]
 
 
+def module_name(event: str, action: Data) -> str:
+    return f"{event}_{action.action}" if action.action else event
+
+
 def pascal_case(*names: str) -> str:
     words = chain.from_iterable(name.split("_") for name in names)
     return "".join(word if word.isupper() else word.capitalize() for word in words)
@@ -82,6 +86,7 @@ def build_event():
     output_dir.mkdir(parents=True, exist_ok=True)
 
     env = Environment(loader=PackageLoader("codegen"))
+    env.globals["filename"] = module_name
 
     # generate base model
     template = env.get_template("_base.py.jinja")
@@ -96,13 +101,13 @@ def build_event():
     # generate event models
     template = env.get_template("event.py.jinja")
     for event, actions in event_types.items():
-        event_text = template.render(
-            event=event,
-            actions=actions,
-            message_events=MESSAGE_EVENTS,
-            has_message_events=HAS_MESSAGE_EVENTS,
-        )
-        (output_dir / f"{event}.py").write_text(event_text)
+        for action in actions:
+            event_text = template.render(
+                action=action,
+                message_events=MESSAGE_EVENTS,
+                has_message_events=HAS_MESSAGE_EVENTS,
+            )
+            (output_dir / f"{module_name(event, action)}.py").write_text(event_text)
 
     # generate init file
     template = env.get_template("__init__.py.jinja")
