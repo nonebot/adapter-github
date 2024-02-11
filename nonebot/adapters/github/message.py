@@ -1,6 +1,5 @@
 from typing import Type, Iterable
-
-from nonebot.typing import overrides
+from typing_extensions import override
 
 from nonebot.adapters import Message as BaseMessage
 from nonebot.adapters import MessageSegment as BaseMessageSegment
@@ -8,17 +7,17 @@ from nonebot.adapters import MessageSegment as BaseMessageSegment
 
 class MessageSegment(BaseMessageSegment["Message"]):
     @classmethod
-    @overrides(BaseMessageSegment)
+    @override
     def get_message_class(cls) -> Type["Message"]:
         return Message
 
-    @overrides(BaseMessageSegment)
+    @override
     def __str__(self) -> str:
         if self.type == "markdown":
             return self.data["text"]
         return f"<{self.type}:{','.join(f'{k}={v}' for k, v in self.data.items())}>"
 
-    @overrides(BaseMessageSegment)
+    @override
     def is_text(self) -> bool:
         return self.type == "markdown"
 
@@ -29,11 +28,11 @@ class MessageSegment(BaseMessageSegment["Message"]):
 
 class Message(BaseMessage[MessageSegment]):
     @classmethod
-    @overrides(BaseMessage)
+    @override
     def get_segment_class(cls) -> Type[MessageSegment]:
         return MessageSegment
 
     @staticmethod
-    @overrides(BaseMessage)
+    @override
     def _construct(msg: str) -> Iterable[MessageSegment]:
         yield MessageSegment.markdown(msg)

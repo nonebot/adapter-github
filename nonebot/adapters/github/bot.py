@@ -1,7 +1,7 @@
 import re
 from contextvars import ContextVar
-from typing_extensions import Self
 from contextlib import asynccontextmanager
+from typing_extensions import Self, override
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -15,7 +15,6 @@ from typing import (
     AsyncGenerator,
 )
 
-from nonebot.typing import overrides
 from githubkit.utils import UNSET, Unset
 from nonebot.message import handle_event
 from githubkit import (
@@ -138,7 +137,7 @@ class Bot(BaseBot, Generic[A]):
             self, query: str, variables: Optional[Dict[str, Any]] = None
         ) -> Dict[str, Any]: ...
 
-    @overrides(BaseBot)
+    @override
     def __init__(self, adapter: "Adapter", app: Union[GitHubApp, OAuthApp]):
         super().__init__(adapter, app.id)
         self.app = app
@@ -157,7 +156,7 @@ class Bot(BaseBot, Generic[A]):
     async def handle_event(self, event: Event) -> None:
         await handle_event(self, event)
 
-    @overrides(BaseBot)
+    @override
     async def send(
         self, event: Event, message: Union[str, Message, MessageSegment]
     ) -> Any:
@@ -165,7 +164,7 @@ class Bot(BaseBot, Generic[A]):
 
 
 class OAuthBot(Bot[OAuthAppAuthStrategy]):
-    @overrides(Bot)
+    @override
     def __init__(self, adapter: "Adapter", app: OAuthApp):
         super().__init__(adapter, app)
         self._github = GitHub(
@@ -204,14 +203,14 @@ class OAuthBot(Bot[OAuthAppAuthStrategy]):
         finally:
             self._ctx_github.set(None)
 
-    @overrides(Bot)
+    @override
     async def handle_event(self, event: Event) -> None:
         _check_nickname(self, event)
         await super().handle_event(event)
 
 
 class GitHubBot(Bot[AppAuthStrategy]):
-    @overrides(Bot)
+    @override
     def __init__(self, adapter: "Adapter", app: GitHubApp):
         super().__init__(adapter, app)
         self._github = GitHub(
@@ -295,7 +294,7 @@ class GitHubBot(Bot[AppAuthStrategy]):
         finally:
             self._ctx_github.set(None)
 
-    @overrides(Bot)
+    @override
     async def handle_event(self, event: Event) -> None:
         _check_at_me(self, event)
         _check_nickname(self, event)

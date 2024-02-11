@@ -1,6 +1,6 @@
 from typing import Any, List, Union, Optional
 
-from pydantic import Extra, Field, BaseModel, validator
+from pydantic import Field, BaseModel, validator
 
 
 class OAuthApp(BaseModel):
@@ -29,7 +29,7 @@ class GitHubApp(BaseModel):
         return "\n".join(value) if isinstance(value, list) else value
 
 
-class Config(BaseModel, extra=Extra.ignore):
+class Config(BaseModel):
     """GitHub Adapter Config"""
 
     github_apps: List[Union[GitHubApp, OAuthApp]] = Field(default_factory=list)

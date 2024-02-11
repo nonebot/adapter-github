@@ -2,11 +2,11 @@ import json
 import asyncio
 import inspect
 from functools import partial
+from typing_extensions import override
 from typing import Any, Type, Union, Callable, Optional, cast
 
-from pydantic import parse_obj_as
-from nonebot.typing import overrides
 from githubkit.webhooks import verify
+from nonebot.compat import type_validate_python
 from githubkit.exception import GraphQLFailed, RequestFailed, RequestTimeout
 from nonebot.drivers import (
     URL,
@@ -17,6 +17,7 @@ from nonebot.drivers import (
     HTTPServerSetup,
 )
 
+from nonebot import get_plugin_config
 from nonebot.adapters import Adapter as BaseAdapter
 
 from . import event
@@ -33,14 +34,14 @@ def import_event_model(event_name: str) -> Type[Event]:
 
 
 class Adapter(BaseAdapter):
-    @overrides(BaseAdapter)
+    @override
     def __init__(self, driver: Driver, **kwargs: Any):
         super().__init__(driver, **kwargs)
-        self.github_config = Config.parse_obj(dict(self.config))
+        self.github_config = get_plugin_config(Config)
         self._setup()
 
     @classmethod
-    @overrides(BaseAdapter)
+    @override
     def get_name(cls) -> str:
         return "GitHub"
 
@@ -132,7 +133,7 @@ class Adapter(BaseAdapter):
             types = events.get(event_name)
             if isinstance(types, dict):
                 if action := event_payload.get("action"):
-                    return parse_obj_as(
+                    return type_validate_python(
                         import_event_model(types[action]),
                         {
                             "id": event_id,
@@ -146,7 +147,7 @@ class Adapter(BaseAdapter):
                     )
             elif types is None:
                 raise ValueError(f"Unknown event type {event_name}.")
-            return parse_obj_as(
+            return type_validate_python(
                 import_event_model(types),
                 {"id": event_id, "name": event_name, "payload": event_payload},
             )
