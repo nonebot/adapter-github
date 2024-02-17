@@ -1,6 +1,8 @@
 from typing import Any, List, Union, Optional
 
-from pydantic import Field, BaseModel, validator
+from pydantic import Field, BaseModel
+
+from .compat import field_validator
 
 
 class OAuthApp(BaseModel):
@@ -24,7 +26,8 @@ class GitHubApp(BaseModel):
     def id(self) -> str:
         return self.app_id
 
-    @validator("private_key", pre=True)
+    @field_validator("private_key", mode="before")
+    @classmethod
     def concat_key(cls, value: object) -> Any:
         return "\n".join(value) if isinstance(value, list) else value
 

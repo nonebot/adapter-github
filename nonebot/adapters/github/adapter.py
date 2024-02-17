@@ -153,8 +153,8 @@ class Adapter(BaseAdapter):
             )
         except Exception as e:
             log("WARNING", f"Failed to parse webhook payload {event_id}", e)
-            return Event.parse_obj(
-                {"id": event_id, "name": event_name, "payload": event_payload}
+            return type_validate_python(
+                Event, {"id": event_id, "name": event_name, "payload": event_payload}
             )
 
     @classmethod
