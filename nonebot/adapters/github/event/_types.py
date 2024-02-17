@@ -294,6 +294,7 @@ events = {
         "reopened": "SecretScanningAlertReopened",
         "resolved": "SecretScanningAlertResolved",
         "revoked": "SecretScanningAlertRevoked",
+        "validated": "SecretScanningAlertValidated",
     },
     "secret_scanning_alert_location": "SecretScanningAlertLocationCreated",
     "security_advisory": {

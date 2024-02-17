@@ -343,6 +343,9 @@ if TYPE_CHECKING:
     from .dependabot_alert_auto_dismissed import (
         DependabotAlertAutoDismissed as DependabotAlertAutoDismissed,
     )
+    from .secret_scanning_alert_validated import (
+        SecretScanningAlertValidated as SecretScanningAlertValidated,
+    )
     from .sponsorship_pending_tier_change import (
         SponsorshipPendingTierChange as SponsorshipPendingTierChange,
     )
@@ -674,6 +677,7 @@ else:
         ".secret_scanning_alert_reopened": ("SecretScanningAlertReopened",),
         ".secret_scanning_alert_resolved": ("SecretScanningAlertResolved",),
         ".secret_scanning_alert_revoked": ("SecretScanningAlertRevoked",),
+        ".secret_scanning_alert_validated": ("SecretScanningAlertValidated",),
         ".secret_scanning_alert_location": ("SecretScanningAlertLocationCreated",),
         ".security_advisory_published": ("SecurityAdvisoryPublished",),
         ".security_advisory_updated": ("SecurityAdvisoryUpdated",),
