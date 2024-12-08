@@ -1,14 +1,14 @@
-import shutil
-import inspect
-from pathlib import Path
-from itertools import chain
-from typing import Union, cast
 from dataclasses import dataclass
+import inspect
+from itertools import chain
+from pathlib import Path
+import shutil
+from typing import Union, cast
 from typing_extensions import get_args, get_origin
 
 from githubkit import GitHubModel
-from jinja2 import Environment, PackageLoader
 from githubkit.versions.latest.webhooks import webhook_action_types
+from jinja2 import Environment, PackageLoader
 
 MESSAGE_EVENTS = {
     "CommitCommentCreated",

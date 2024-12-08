@@ -1,40 +1,40 @@
-import re
-from contextvars import ContextVar
 from contextlib import asynccontextmanager
-from typing_extensions import Self, override
+from contextvars import ContextVar
+import re
 from typing import (
     TYPE_CHECKING,
     Any,
-    Dict,
-    List,
-    Union,
-    Generic,
-    TypeVar,
-    Callable,
-    Optional,
     AsyncGenerator,
+    Callable,
+    Dict,
+    Generic,
+    List,
+    Optional,
+    TypeVar,
+    Union,
 )
+from typing_extensions import Self, override
 
-from githubkit.utils import UNSET, Unset
-from nonebot.message import handle_event
 from githubkit import (
-    GitHub,
     AppAuthStrategy,
     BaseAuthStrategy,
-    TokenAuthStrategy,
+    GitHub,
     OAuthAppAuthStrategy,
+    TokenAuthStrategy,
 )
+from githubkit.utils import UNSET, Unset
 
 from nonebot.adapters import Bot as BaseBot
+from nonebot.message import handle_event
 
-from .config import OAuthApp, GitHubApp
+from .config import GitHubApp, OAuthApp
+from .event import CommitCommentCreated, Event
 from .message import Message, MessageSegment
-from .event import Event, CommitCommentCreated
 from .utils import APIContext, get_attr_or_item
 
 if TYPE_CHECKING:
-    from githubkit.versions.rest import RestVersionSwitcher
     from githubkit.versions.latest.types import AppPermissionsType
+    from githubkit.versions.rest import RestVersionSwitcher
 
     from .adapter import Adapter
 

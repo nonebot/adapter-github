@@ -1,6 +1,6 @@
-from typing import Any, List, Union, Optional
+from typing import Any, List, Optional, Union
 
-from pydantic import Field, BaseModel
+from pydantic import BaseModel, Field
 
 from .compat import field_validator
 

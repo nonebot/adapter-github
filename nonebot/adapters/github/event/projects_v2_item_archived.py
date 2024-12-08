@@ -4,5 +4,4 @@ from ._base import Event
 
 
 class ProjectsV2ItemArchived(Event):
-
     payload: WebhookProjectsV2ItemArchived

@@ -4,5 +4,4 @@ from ._base import Event
 
 
 class ProjectsV2ItemReordered(Event):
-
     payload: WebhookProjectsV2ItemReordered

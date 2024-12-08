@@ -1,32 +1,32 @@
-import json
 import asyncio
-import inspect
 from functools import partial
+import inspect
+import json
+from typing import Any, Callable, Optional, Type, Union, cast
 from typing_extensions import override
-from typing import Any, Type, Union, Callable, Optional, cast
 
-from githubkit.webhooks import verify
-from nonebot.compat import type_validate_python
 from githubkit.exception import GraphQLFailed, RequestFailed, RequestTimeout
-from nonebot.drivers import (
-    URL,
-    Driver,
-    Request,
-    Response,
-    ReverseDriver,
-    HTTPServerSetup,
-)
+from githubkit.webhooks import verify
 
 from nonebot import get_plugin_config
 from nonebot.adapters import Adapter as BaseAdapter
+from nonebot.compat import type_validate_python
+from nonebot.drivers import (
+    URL,
+    Driver,
+    HTTPServerSetup,
+    Request,
+    Response,
+    ReverseDriver,
+)
 
 from . import event
-from .utils import log
+from .bot import Bot, GitHubBot, OAuthBot
+from .config import Config, GitHubApp, OAuthApp
 from .event import Event, events
-from .bot import Bot, OAuthBot, GitHubBot
+from .exception import ActionFailed, ActionTimeout, GraphQLError, NetworkError
 from .message import Message, MessageSegment
-from .config import Config, OAuthApp, GitHubApp
-from .exception import ActionFailed, GraphQLError, NetworkError, ActionTimeout
+from .utils import log
 
 
 def import_event_model(event_name: str) -> Type[Event]:
@@ -38,6 +38,7 @@ class Adapter(BaseAdapter):
     def __init__(self, driver: Driver, **kwargs: Any):
         super().__init__(driver, **kwargs)
         self.github_config = get_plugin_config(Config)
+        self.tasks: set["asyncio.Task"] = set()
         self._setup()
 
     @classmethod
@@ -101,7 +102,9 @@ class Adapter(BaseAdapter):
 
         if event := self.payload_to_event(event_id, event_name, payload):
             bot = cast(Bot, self.bots[app.id])
-            asyncio.create_task(bot.handle_event(event))
+            task = asyncio.create_task(bot.handle_event(event))
+            task.add_done_callback(self.tasks.discard)
+            self.tasks.add(task)
 
         return Response(200, content="OK")
 

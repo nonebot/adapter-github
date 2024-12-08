@@ -4,5 +4,4 @@ from ._base import Event
 
 
 class PullRequestEdited(Event):
-
     payload: WebhookPullRequestEdited

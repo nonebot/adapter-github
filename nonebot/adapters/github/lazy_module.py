@@ -1,11 +1,11 @@
+import importlib
+from importlib.abc import MetaPathFinder
+from importlib.machinery import ModuleSpec, PathFinder, SourceFileLoader
+from itertools import chain
 import re
 import sys
-import importlib
-from itertools import chain
 from types import ModuleType
-from importlib.abc import MetaPathFinder
-from typing import Any, Dict, List, Tuple, Optional, Sequence
-from importlib.machinery import ModuleSpec, PathFinder, SourceFileLoader
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 LAZY_MODULES = (r"^nonebot\.adapters\.github\.event$",)
 
