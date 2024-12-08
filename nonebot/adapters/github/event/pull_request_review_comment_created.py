@@ -1,15 +1,15 @@
 from functools import cached_property
 from typing_extensions import override
 
-from nonebot.compat import PYDANTIC_V2, ConfigDict
 from githubkit.versions.latest.models import WebhookPullRequestReviewCommentCreated
 
-from ._base import Event
+from nonebot.compat import PYDANTIC_V2, ConfigDict
+
 from ..message import Message
+from ._base import Event
 
 
 class PullRequestReviewCommentCreated(Event):
-
     payload: WebhookPullRequestReviewCommentCreated
 
     @override

@@ -4,5 +4,4 @@ from ._base import Event
 
 
 class WorkflowRunInProgress(Event):
-
     payload: WebhookWorkflowRunInProgress

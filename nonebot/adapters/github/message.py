@@ -1,4 +1,4 @@
-from typing import Type, Iterable
+from typing import Iterable, Type
 from typing_extensions import override
 
 from nonebot.adapters import Message as BaseMessage

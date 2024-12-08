@@ -4,5 +4,4 @@ from ._base import Event
 
 
 class ProjectsV2ItemDeleted(Event):
-
     payload: WebhookProjectsV2ItemDeleted

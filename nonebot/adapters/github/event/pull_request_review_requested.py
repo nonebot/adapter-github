@@ -9,7 +9,6 @@ from ._base import Event
 
 
 class PullRequestReviewRequested(Event):
-
     payload: Union[
         WebhookPullRequestReviewRequestedOneof0, WebhookPullRequestReviewRequestedOneof1
     ]
