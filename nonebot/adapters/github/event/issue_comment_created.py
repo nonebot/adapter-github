@@ -3,9 +3,9 @@ from typing_extensions import override
 
 from githubkit.versions.latest.models import WebhookIssueCommentCreated
 
+from github.message import Message
 from nonebot.compat import PYDANTIC_V2, ConfigDict
 
-from ..message import Message
 from ._base import Event
 
 

@@ -38,6 +38,7 @@ class Adapter(BaseAdapter):
     def __init__(self, driver: Driver, **kwargs: Any):
         super().__init__(driver, **kwargs)
         self.github_config = get_plugin_config(Config)
+        self.tasks: set["asyncio.Task"] = set()
         self._setup()
 
     @classmethod
@@ -101,7 +102,9 @@ class Adapter(BaseAdapter):
 
         if event := self.payload_to_event(event_id, event_name, payload):
             bot = cast(Bot, self.bots[app.id])
-            asyncio.create_task(bot.handle_event(event))
+            task = asyncio.create_task(bot.handle_event(event))
+            task.add_done_callback(self.tasks.discard)
+            self.tasks.add(task)
 
         return Response(200, content="OK")
 
