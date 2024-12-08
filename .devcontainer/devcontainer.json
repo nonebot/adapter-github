@@ -9,13 +9,11 @@
     "vscode": {
       "settings": {
         "python.analysis.diagnosticMode": "workspace",
-        "python.analysis.typeCheckingMode": "standard",
-        "ruff.organizeImports": true,
         "[python]": {
           "editor.defaultFormatter": "charliermarsh.ruff",
           "editor.codeActionsOnSave": {
-            "source.fixAll.ruff": true,
-            "source.organizeImports": true
+            "source.fixAll.ruff": "explicit",
+            "source.organizeImports": "explicit"
           }
         },
         "[javascript]": {
