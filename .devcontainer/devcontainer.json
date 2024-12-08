@@ -9,10 +9,10 @@
     "vscode": {
       "settings": {
         "python.analysis.diagnosticMode": "workspace",
-        "python.analysis.typeCheckingMode": "basic",
-        "ruff.organizeImports": false,
+        "python.analysis.typeCheckingMode": "standard",
+        "ruff.organizeImports": true,
         "[python]": {
-          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.defaultFormatter": "charliermarsh.ruff",
           "editor.codeActionsOnSave": {
             "source.fixAll.ruff": true,
             "source.organizeImports": true
@@ -44,8 +44,6 @@
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
-        "ms-python.isort",
-        "ms-python.black-formatter",
         "charliermarsh.ruff",
         "EditorConfig.EditorConfig",
         "esbenp.prettier-vscode"
