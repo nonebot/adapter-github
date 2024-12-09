@@ -237,27 +237,27 @@ typing = ["typing-extensions (>=4.12.2)"]
 
 [[package]]
 name = "githubkit"
-version = "0.11.14"
+version = "0.12.1"
 description = "GitHub SDK for Python"
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = "<4.0,>=3.9"
 files = [
-    {file = "githubkit-0.11.14-py3-none-any.whl", hash = "sha256:780f346515f68f9f27db1b486f83fd64fe4142ad42a75b79423064d3e99ece97"},
-    {file = "githubkit-0.11.14.tar.gz", hash = "sha256:a62af8a9e3c98e202c6fd2d56ea106f238aebf03a8282c34b757eba6eaeab72c"},
+    {file = "githubkit-0.12.1-py3-none-any.whl", hash = "sha256:bfbd46e37fa9ae83e0014d72e3c27fbb838520039198ccec8a84bd398b81bf4c"},
+    {file = "githubkit-0.12.1.tar.gz", hash = "sha256:c8482a85786a508dcf05852a8c58b116ffacb9c94d28e94a72bcfc279169a171"},
 ]
 
 [package.dependencies]
-hishel = ">=0.0.21,<=0.0.33"
+anyio = ">=3.6.1,<5.0.0"
+hishel = ">=0.0.21,<=0.2.0"
 httpx = ">=0.23.0,<1.0.0"
 pydantic = ">=1.9.1,<2.5.0 || >2.5.0,<2.5.1 || >2.5.1,<3.0.0"
 PyJWT = {version = ">=2.4.0,<3.0.0", extras = ["crypto"], optional = true, markers = "extra == \"jwt\" or extra == \"auth-app\" or extra == \"auth\" or extra == \"all\""}
-typing-extensions = ">=4.3.0,<5.0.0"
+typing-extensions = ">=4.11.0,<5.0.0"
 
 [package.extras]
-all = ["PyJWT[crypto] (>=2.4.0,<3.0.0)", "anyio (>=3.6.1,<5.0.0)"]
-auth = ["PyJWT[crypto] (>=2.4.0,<3.0.0)", "anyio (>=3.6.1,<5.0.0)"]
+all = ["PyJWT[crypto] (>=2.4.0,<3.0.0)"]
+auth = ["PyJWT[crypto] (>=2.4.0,<3.0.0)"]
 auth-app = ["PyJWT[crypto] (>=2.4.0,<3.0.0)"]
-auth-oauth-device = ["anyio (>=3.6.1,<5.0.0)"]
 jwt = ["PyJWT[crypto] (>=2.4.0,<3.0.0)"]
 
 [[package]]
@@ -273,18 +273,17 @@ files = [
 
 [[package]]
 name = "hishel"
-version = "0.0.33"
+version = "0.1.1"
 description = "Persistent cache implementation for httpx and httpcore"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "hishel-0.0.33-py3-none-any.whl", hash = "sha256:6e6c6cdaf432ff4c4981e7792ef7d1fa4c8ede58b9dbbcefb9ab3fc9770f2a07"},
-    {file = "hishel-0.0.33.tar.gz", hash = "sha256:ab5b2661d5e2252f305fd0fb20e8c76bfab3ea73458f20f2591c53c37b270089"},
+    {file = "hishel-0.1.1-py3-none-any.whl", hash = "sha256:5b51acc340303faeef2f5cfc1658acb1db1fdc3e3ad76406265a485f9707c5d6"},
+    {file = "hishel-0.1.1.tar.gz", hash = "sha256:1f6421b78cc23fc43c610f651b7848c9b8eee2d29551d64a2ab0d45b319b6559"},
 ]
 
 [package.dependencies]
 httpx = ">=0.22.0"
-typing-extensions = ">=4.8.0"
 
 [package.extras]
 redis = ["redis (==5.0.1)"]
@@ -1266,4 +1265,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "bc5a22953ae5450f453405e8ac2f3dbbafada5d1a399d51348ffda219acd1c6a"
+content-hash = "7aef1feeee93ca141ccb9b3d90a04d4136db043e0a9c86111733192bdf47f469"

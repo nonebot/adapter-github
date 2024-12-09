@@ -257,6 +257,15 @@ if TYPE_CHECKING:
     from .projects_v2_reopened import (
         ProjectsV2ProjectReopened as ProjectsV2ProjectReopened,
     )
+    from .projects_v2_status_update_created import (
+        ProjectsV2StatusUpdateCreated as ProjectsV2StatusUpdateCreated,
+    )
+    from .projects_v2_status_update_deleted import (
+        ProjectsV2StatusUpdateDeleted as ProjectsV2StatusUpdateDeleted,
+    )
+    from .projects_v2_status_update_edited import (
+        ProjectsV2StatusUpdateEdited as ProjectsV2StatusUpdateEdited,
+    )
     from .public import Public as Public
     from .pull_request_assigned import PullRequestAssigned as PullRequestAssigned
     from .pull_request_auto_merge_disabled import (
@@ -379,14 +388,14 @@ if TYPE_CHECKING:
     from .secret_scanning_alert_location import (
         SecretScanningAlertLocationCreated as SecretScanningAlertLocationCreated,
     )
+    from .secret_scanning_alert_publicly_leaked import (
+        SecretScanningAlertPubliclyLeaked as SecretScanningAlertPubliclyLeaked,
+    )
     from .secret_scanning_alert_reopened import (
         SecretScanningAlertReopened as SecretScanningAlertReopened,
     )
     from .secret_scanning_alert_resolved import (
         SecretScanningAlertResolved as SecretScanningAlertResolved,
-    )
-    from .secret_scanning_alert_revoked import (
-        SecretScanningAlertRevoked as SecretScanningAlertRevoked,
     )
     from .secret_scanning_alert_validated import (
         SecretScanningAlertValidated as SecretScanningAlertValidated,
@@ -416,6 +425,18 @@ if TYPE_CHECKING:
     from .star_created import StarCreated as StarCreated
     from .star_deleted import StarDeleted as StarDeleted
     from .status import Status as Status
+    from .sub_issues_parent_issue_added import (
+        SubIssuesParentIssueAdded as SubIssuesParentIssueAdded,
+    )
+    from .sub_issues_parent_issue_removed import (
+        SubIssuesParentIssueRemoved as SubIssuesParentIssueRemoved,
+    )
+    from .sub_issues_sub_issue_added import (
+        SubIssuesSubIssueAdded as SubIssuesSubIssueAdded,
+    )
+    from .sub_issues_sub_issue_removed import (
+        SubIssuesSubIssueRemoved as SubIssuesSubIssueRemoved,
+    )
     from .team_add import TeamAdd as TeamAdd
     from .team_added_to_repository import TeamAddedToRepository as TeamAddedToRepository
     from .team_created import TeamCreated as TeamCreated
@@ -603,6 +624,9 @@ else:
         ".projects_v2_item_edited": ("ProjectsV2ItemEdited",),
         ".projects_v2_item_reordered": ("ProjectsV2ItemReordered",),
         ".projects_v2_item_restored": ("ProjectsV2ItemRestored",),
+        ".projects_v2_status_update_created": ("ProjectsV2StatusUpdateCreated",),
+        ".projects_v2_status_update_deleted": ("ProjectsV2StatusUpdateDeleted",),
+        ".projects_v2_status_update_edited": ("ProjectsV2StatusUpdateEdited",),
         ".public": ("Public",),
         ".pull_request_assigned": ("PullRequestAssigned",),
         ".pull_request_auto_merge_disabled": ("PullRequestAutoMergeDisabled",),
@@ -674,9 +698,11 @@ else:
             "RepositoryVulnerabilityAlertResolve",
         ),
         ".secret_scanning_alert_created": ("SecretScanningAlertCreated",),
+        ".secret_scanning_alert_publicly_leaked": (
+            "SecretScanningAlertPubliclyLeaked",
+        ),
         ".secret_scanning_alert_reopened": ("SecretScanningAlertReopened",),
         ".secret_scanning_alert_resolved": ("SecretScanningAlertResolved",),
-        ".secret_scanning_alert_revoked": ("SecretScanningAlertRevoked",),
         ".secret_scanning_alert_validated": ("SecretScanningAlertValidated",),
         ".secret_scanning_alert_location": ("SecretScanningAlertLocationCreated",),
         ".security_advisory_published": ("SecurityAdvisoryPublished",),
@@ -692,6 +718,10 @@ else:
         ".star_created": ("StarCreated",),
         ".star_deleted": ("StarDeleted",),
         ".status": ("Status",),
+        ".sub_issues_parent_issue_added": ("SubIssuesParentIssueAdded",),
+        ".sub_issues_parent_issue_removed": ("SubIssuesParentIssueRemoved",),
+        ".sub_issues_sub_issue_added": ("SubIssuesSubIssueAdded",),
+        ".sub_issues_sub_issue_removed": ("SubIssuesSubIssueRemoved",),
         ".team_add": ("TeamAdd",),
         ".team_added_to_repository": ("TeamAddedToRepository",),
         ".team_created": ("TeamCreated",),
