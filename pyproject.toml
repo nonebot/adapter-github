@@ -90,6 +90,7 @@ defineConstant = { PYDANTIC_V2 = true }
 
 typeCheckingMode = "standard"
 reportShadowedImports = false
+reportIncompatibleVariableOverride = false
 disableBytesTypePromotions = true
 
 [build-system]
