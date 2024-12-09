@@ -2,7 +2,7 @@ import asyncio
 from functools import partial
 import inspect
 import json
-from typing import Any, Callable, Optional, Type, Union, cast
+from typing import Any, Callable, Optional, Union, cast
 from typing_extensions import override
 
 from githubkit.exception import GraphQLFailed, RequestFailed, RequestTimeout
@@ -29,7 +29,7 @@ from .message import Message, MessageSegment
 from .utils import log
 
 
-def import_event_model(event_name: str) -> Type[Event]:
+def import_event_model(event_name: str) -> type[Event]:
     return getattr(event, event_name)
 
 

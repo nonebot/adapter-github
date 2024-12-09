@@ -23,9 +23,9 @@ _✨ GitHub 协议适配 ✨_
   <a href="https://pypi.python.org/pypi/nonebot-adapter-github">
     <img src="https://img.shields.io/pypi/v/nonebot-adapter-github" alt="pypi">
   </a>
-  <img src="https://img.shields.io/badge/python-3.8+-blue" alt="python">
+  <img src="https://img.shields.io/badge/python-3.9+-blue" alt="python">
   <a href="https://results.pre-commit.ci/latest/github/nonebot/adapter-github/master">
-    <img src="https://results.pre-commit.ci/badge/github/nonebot/adapter-github/master.svg" />
+    <img src="https://results.pre-commit.ci/badge/github/nonebot/adapter-github/master.svg" alt="pre-commit"/>
   </a>
   <br />
   <a href="https://jq.qq.com/?_wv=1027&k=5OFifDh">

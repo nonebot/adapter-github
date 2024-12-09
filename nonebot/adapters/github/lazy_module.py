@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 import importlib
 from importlib.abc import MetaPathFinder
 from importlib.machinery import ModuleSpec, PathFinder, SourceFileLoader
@@ -5,18 +6,18 @@ from itertools import chain
 import re
 import sys
 from types import ModuleType
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Optional
 
 LAZY_MODULES = (r"^nonebot\.adapters\.github\.event$",)
 
 
 class LazyModule(ModuleType):
-    __lazy_vars__: Dict[str, List[str]]
-    __lazy_vars_validated__: Optional[Dict[str, List[str]]]
-    __lazy_vars_mapping__: Dict[str, str]
+    __lazy_vars__: dict[str, list[str]]
+    __lazy_vars_validated__: Optional[dict[str, list[str]]]
+    __lazy_vars_mapping__: dict[str, str]
 
     @property
-    def __all__(self) -> Tuple[str, ...]:
+    def __all__(self) -> tuple[str, ...]:
         lazy_vars = self.__lazy_vars_validated__
         if lazy_vars is None:
             return ()

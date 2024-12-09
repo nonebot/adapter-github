@@ -1,14 +1,12 @@
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from contextvars import ContextVar
 import re
 from typing import (
     TYPE_CHECKING,
     Any,
-    AsyncGenerator,
     Callable,
-    Dict,
     Generic,
-    List,
     Optional,
     TypeVar,
     Union,
@@ -134,8 +132,8 @@ class Bot(BaseBot, Generic[A]):
         rest: RestVersionSwitcher
 
         async def async_graphql(
-            self, query: str, variables: Optional[Dict[str, Any]] = None
-        ) -> Dict[str, Any]: ...
+            self, query: str, variables: Optional[dict[str, Any]] = None
+        ) -> dict[str, Any]: ...
 
     @override
     def __init__(self, adapter: "Adapter", app: Union[GitHubApp, OAuthApp]):
@@ -247,8 +245,8 @@ class GitHubBot(Bot[AppAuthStrategy]):
     async def as_installation(
         self,
         installation_id: int,
-        repositories: Union[Unset, List[str]] = UNSET,
-        repository_ids: Union[Unset, List[int]] = UNSET,
+        repositories: Union[Unset, list[str]] = UNSET,
+        repository_ids: Union[Unset, list[int]] = UNSET,
         permissions: Union[Unset, "AppPermissionsType"] = UNSET,
     ) -> AsyncGenerator[Self, None]:
         if self._ctx_github.get() is not None:

@@ -1,4 +1,4 @@
-from typing import Any, List, Optional, Union
+from typing import Any, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -35,8 +35,8 @@ class GitHubApp(BaseModel):
 class Config(BaseModel):
     """GitHub Adapter Config"""
 
-    github_apps: List[Union[GitHubApp, OAuthApp]] = Field(default_factory=list)
+    github_apps: list[Union[GitHubApp, OAuthApp]] = Field(default_factory=list)
     """Allowed GitHub App List"""
     github_base_url: Optional[str] = None
     github_accept_format: Optional[str] = None
-    github_previews: Optional[List[str]] = None
+    github_previews: Optional[list[str]] = None
