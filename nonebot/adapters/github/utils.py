@@ -1,6 +1,6 @@
 import contextlib
 import re
-from typing import TYPE_CHECKING, Any, Tuple
+from typing import TYPE_CHECKING, Any
 
 from nonebot.utils import logger_wrapper
 
@@ -22,7 +22,7 @@ def get_attr_or_item(obj: Any, attr: str) -> Any:
 class APIContext:
     __slots__ = ("bot", "parts")
 
-    def __init__(self, bot: "Bot", parts: Tuple[str, ...]):
+    def __init__(self, bot: "Bot", parts: tuple[str, ...]):
         self.bot = bot
         self.parts = parts
 

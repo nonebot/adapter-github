@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any
 from typing_extensions import override
 
 from github.message import Message
@@ -10,7 +10,7 @@ from nonebot.utils import escape_tag
 class Event(BaseEvent):
     id: str
     name: str
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
 
     to_me: bool = False
 
