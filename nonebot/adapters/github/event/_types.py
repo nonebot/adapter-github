@@ -209,6 +209,11 @@ events = {
         "reordered": "ProjectsV2ItemReordered",
         "restored": "ProjectsV2ItemRestored",
     },
+    "projects_v2_status_update": {
+        "created": "ProjectsV2StatusUpdateCreated",
+        "deleted": "ProjectsV2StatusUpdateDeleted",
+        "edited": "ProjectsV2StatusUpdateEdited",
+    },
     "public": "Public",
     "pull_request": {
         "assigned": "PullRequestAssigned",
@@ -291,9 +296,9 @@ events = {
     },
     "secret_scanning_alert": {
         "created": "SecretScanningAlertCreated",
+        "publicly_leaked": "SecretScanningAlertPubliclyLeaked",
         "reopened": "SecretScanningAlertReopened",
         "resolved": "SecretScanningAlertResolved",
-        "revoked": "SecretScanningAlertRevoked",
         "validated": "SecretScanningAlertValidated",
     },
     "secret_scanning_alert_location": "SecretScanningAlertLocationCreated",
@@ -316,6 +321,12 @@ events = {
         "deleted": "StarDeleted",
     },
     "status": "Status",
+    "sub_issues": {
+        "parent_issue_added": "SubIssuesParentIssueAdded",
+        "parent_issue_removed": "SubIssuesParentIssueRemoved",
+        "sub_issue_added": "SubIssuesSubIssueAdded",
+        "sub_issue_removed": "SubIssuesSubIssueRemoved",
+    },
     "team_add": "TeamAdd",
     "team": {
         "added_to_repository": "TeamAddedToRepository",
