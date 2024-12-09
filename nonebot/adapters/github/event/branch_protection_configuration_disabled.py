@@ -6,5 +6,4 @@ from ._base import Event
 
 
 class BranchProtectionConfigurationDisabled(Event):
-
     payload: WebhookBranchProtectionConfigurationDisabled

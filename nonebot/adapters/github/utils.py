@@ -1,5 +1,5 @@
-import re
 import contextlib
+import re
 from typing import TYPE_CHECKING, Any, Tuple
 
 from nonebot.utils import logger_wrapper
@@ -27,7 +27,7 @@ class APIContext:
         self.parts = parts
 
     def __getattr__(self, name: str) -> "APIContext":
-        return APIContext(self.bot, self.parts + (name,))
+        return APIContext(self.bot, (*self.parts, name))
 
     async def __call__(self, **kwargs: Any) -> Any:
         return await self.bot.call_api(".".join(self.parts), **kwargs)

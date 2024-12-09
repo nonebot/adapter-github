@@ -4,5 +4,4 @@ from ._base import Event
 
 
 class ReleasePrereleased(Event):
-
     payload: WebhookReleasePrereleased

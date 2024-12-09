@@ -10,6 +10,6 @@ else:
     from pydantic import validator
 
     def field_validator(
-        __field: str, *fields: str, mode: Literal["before", "after"] = "after"
+        __field: str, /, *fields: str, mode: Literal["before", "after"] = "after"
     ):
         return validator(__field, *fields, pre=mode == "before", allow_reuse=True)

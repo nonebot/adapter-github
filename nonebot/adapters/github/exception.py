@@ -7,10 +7,11 @@ FrontMatter:
 
 from typing import Optional
 
-from nonebot.exception import AdapterException
-from nonebot.exception import ActionFailed as BaseActionFailed
-from nonebot.exception import NetworkError as BaseNetworkError
 from githubkit.exception import GraphQLFailed, RequestFailed, RequestTimeout
+
+from nonebot.exception import ActionFailed as BaseActionFailed
+from nonebot.exception import AdapterException
+from nonebot.exception import NetworkError as BaseNetworkError
 
 
 class GitHubAdapterException(AdapterException):

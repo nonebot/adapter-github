@@ -1,12 +1,10 @@
 from typing import Any, Dict
 from typing_extensions import override
 
-from nonebot.utils import escape_tag
-
+from github.message import Message
+from github.utils import get_attr_or_item
 from nonebot.adapters import Event as BaseEvent
-
-from ..message import Message
-from ..utils import get_attr_or_item
+from nonebot.utils import escape_tag
 
 
 class Event(BaseEvent):

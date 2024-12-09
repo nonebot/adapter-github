@@ -138,5 +138,5 @@ github = bot.github
 生成事件列表：
 
 ```bash
-python -m codegen && ruff check --fix -e . && isort . && black .
+python -m codegen && ruff check --fix -e . && ruff format .
 ```
