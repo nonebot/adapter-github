@@ -400,6 +400,9 @@ if TYPE_CHECKING:
     from .secret_scanning_alert_validated import (
         SecretScanningAlertValidated as SecretScanningAlertValidated,
     )
+    from .secret_scanning_scan import (
+        SecretScanningScanCompleted as SecretScanningScanCompleted,
+    )
     from .security_advisory_published import (
         SecurityAdvisoryPublished as SecurityAdvisoryPublished,
     )
@@ -705,6 +708,7 @@ else:
         ".secret_scanning_alert_resolved": ("SecretScanningAlertResolved",),
         ".secret_scanning_alert_validated": ("SecretScanningAlertValidated",),
         ".secret_scanning_alert_location": ("SecretScanningAlertLocationCreated",),
+        ".secret_scanning_scan": ("SecretScanningScanCompleted",),
         ".security_advisory_published": ("SecurityAdvisoryPublished",),
         ".security_advisory_updated": ("SecurityAdvisoryUpdated",),
         ".security_advisory_withdrawn": ("SecurityAdvisoryWithdrawn",),
