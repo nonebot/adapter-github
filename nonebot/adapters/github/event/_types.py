@@ -302,6 +302,7 @@ events = {
         "validated": "SecretScanningAlertValidated",
     },
     "secret_scanning_alert_location": "SecretScanningAlertLocationCreated",
+    "secret_scanning_scan": "SecretScanningScanCompleted",
     "security_advisory": {
         "published": "SecurityAdvisoryPublished",
         "updated": "SecurityAdvisoryUpdated",
