@@ -32,7 +32,7 @@ jobs:
         run: uv build
 
       - name: Publish package to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+        run: uv publish
 
       - name: Publish package to GitHub
         run: |
