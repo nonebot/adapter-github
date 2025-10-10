@@ -1,6 +1,6 @@
 {
-  "name": "Default Linux Universal",
-  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  "name": "Ubuntu",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
     "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {}
   },
