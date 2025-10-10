@@ -49,6 +49,9 @@ if TYPE_CHECKING:
     from .create import Create as Create
     from .custom_property_created import CustomPropertyCreated as CustomPropertyCreated
     from .custom_property_deleted import CustomPropertyDeleted as CustomPropertyDeleted
+    from .custom_property_promote_to_enterprise import (
+        CustomPropertyPromotedToEnterprise as CustomPropertyPromotedToEnterprise,
+    )
     from .custom_property_updated import CustomPropertyUpdated as CustomPropertyUpdated
     from .custom_property_values import (
         CustomPropertyValuesUpdated as CustomPropertyValuesUpdated,
@@ -139,6 +142,18 @@ if TYPE_CHECKING:
     from .issue_comment_created import IssueCommentCreated as IssueCommentCreated
     from .issue_comment_deleted import IssueCommentDeleted as IssueCommentDeleted
     from .issue_comment_edited import IssueCommentEdited as IssueCommentEdited
+    from .issue_dependencies_blocked_by_added import (
+        IssueDependenciesBlockedByAdded as IssueDependenciesBlockedByAdded,
+    )
+    from .issue_dependencies_blocked_by_removed import (
+        IssueDependenciesBlockedByRemoved as IssueDependenciesBlockedByRemoved,
+    )
+    from .issue_dependencies_blocking_added import (
+        IssueDependenciesBlockingAdded as IssueDependenciesBlockingAdded,
+    )
+    from .issue_dependencies_blocking_removed import (
+        IssueDependenciesBlockingRemoved as IssueDependenciesBlockingRemoved,
+    )
     from .issues_assigned import IssuesAssigned as IssuesAssigned
     from .issues_closed import IssuesClosed as IssuesClosed
     from .issues_deleted import IssuesDeleted as IssuesDeleted
@@ -151,10 +166,12 @@ if TYPE_CHECKING:
     from .issues_pinned import IssuesPinned as IssuesPinned
     from .issues_reopened import IssuesReopened as IssuesReopened
     from .issues_transferred import IssuesTransferred as IssuesTransferred
+    from .issues_typed import IssuesTyped as IssuesTyped
     from .issues_unassigned import IssuesUnassigned as IssuesUnassigned
     from .issues_unlabeled import IssuesUnlabeled as IssuesUnlabeled
     from .issues_unlocked import IssuesUnlocked as IssuesUnlocked
     from .issues_unpinned import IssuesUnpinned as IssuesUnpinned
+    from .issues_untyped import IssuesUntyped as IssuesUntyped
     from .label_created import LabelCreated as LabelCreated
     from .label_deleted import LabelDeleted as LabelDeleted
     from .label_edited import LabelEdited as LabelEdited
@@ -489,6 +506,9 @@ else:
         ".create": ("Create",),
         ".custom_property_created": ("CustomPropertyCreated",),
         ".custom_property_deleted": ("CustomPropertyDeleted",),
+        ".custom_property_promote_to_enterprise": (
+            "CustomPropertyPromotedToEnterprise",
+        ),
         ".custom_property_updated": ("CustomPropertyUpdated",),
         ".custom_property_values": ("CustomPropertyValuesUpdated",),
         ".delete": ("Delete",),
@@ -541,6 +561,12 @@ else:
         ".issue_comment_created": ("IssueCommentCreated",),
         ".issue_comment_deleted": ("IssueCommentDeleted",),
         ".issue_comment_edited": ("IssueCommentEdited",),
+        ".issue_dependencies_blocked_by_added": ("IssueDependenciesBlockedByAdded",),
+        ".issue_dependencies_blocked_by_removed": (
+            "IssueDependenciesBlockedByRemoved",
+        ),
+        ".issue_dependencies_blocking_added": ("IssueDependenciesBlockingAdded",),
+        ".issue_dependencies_blocking_removed": ("IssueDependenciesBlockingRemoved",),
         ".issues_assigned": ("IssuesAssigned",),
         ".issues_closed": ("IssuesClosed",),
         ".issues_deleted": ("IssuesDeleted",),
@@ -553,10 +579,12 @@ else:
         ".issues_pinned": ("IssuesPinned",),
         ".issues_reopened": ("IssuesReopened",),
         ".issues_transferred": ("IssuesTransferred",),
+        ".issues_typed": ("IssuesTyped",),
         ".issues_unassigned": ("IssuesUnassigned",),
         ".issues_unlabeled": ("IssuesUnlabeled",),
         ".issues_unlocked": ("IssuesUnlocked",),
         ".issues_unpinned": ("IssuesUnpinned",),
+        ".issues_untyped": ("IssuesUntyped",),
         ".label_created": ("LabelCreated",),
         ".label_deleted": ("LabelDeleted",),
         ".label_edited": ("LabelEdited",),
