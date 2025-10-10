@@ -33,15 +33,13 @@ dev = [
   "pre-commit>=3.1.0,<4",
 ]
 
-[tool.hatch.build.targets.sdist]
-include = ["nonebot"]
-
-[tool.hatch.build.targets.wheel]
-include = ["nonebot"]
-
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.9.1,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "nonebot.adapters.github"
+module-root = ""
 
 [tool.ruff]
 line-length = 88
