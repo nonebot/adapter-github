@@ -1,13 +1,11 @@
-[tool.poetry]
+[project]
 name = "nonebot-adapter-github"
 version = "0.5.0"
 description = "GitHub adapter for nonebot2"
-authors = ["yanyongyu <yyy@nonebot.dev>"]
-license = "MIT"
+authors = [{ name = "yanyongyu", email = "yyy@nonebot.dev" }]
+requires-python = ">=3.9, <4.0"
 readme = "README.md"
-homepage = "https://github.com/nonebot/adapter-github"
-repository = "https://github.com/nonebot/adapter-github"
-documentation = "https://github.com/nonebot/adapter-github"
+license = "MIT"
 keywords = ["bot", "github", "webhook"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
@@ -16,19 +14,32 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
 ]
-packages = [{ include = "nonebot" }]
+dependencies = [
+  "nonebot2>=2.2.0,<3",
+  "pydantic>=1.10.0,<3.0.0,!=2.5.0,!=2.5.1",
+  "githubkit[auth-app]>=0.12.2,<0.13.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-nonebot2 = "^2.2.0"
-pydantic = ">=1.10.0,<3.0.0,!=2.5.0,!=2.5.1"
-githubkit = { version = ">=0.12.2,<0.13.0", extras = ["auth-app"] }
+[project.urls]
+Homepage = "https://github.com/nonebot/adapter-github"
+Repository = "https://github.com/nonebot/adapter-github"
+Documentation = "https://github.com/nonebot/adapter-github"
 
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.8.2"
-Jinja2 = "^3.1.2"
-nonemoji = "^0.1.2"
-pre-commit = "^3.1.0"
+[dependency-groups]
+dev = [
+  "ruff>=0.8.2,<0.9",
+  "Jinja2>=3.1.2,<4",
+  "nonemoji>=0.1.2,<0.2",
+  "pre-commit>=3.1.0,<4",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.1,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "nonebot.adapters.github"
+module-root = ""
 
 [tool.ruff]
 line-length = 88
@@ -92,7 +103,3 @@ typeCheckingMode = "standard"
 reportShadowedImports = false
 reportIncompatibleVariableOverride = false
 disableBytesTypePromotions = true
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"

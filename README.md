@@ -45,7 +45,7 @@ _✨ GitHub 协议适配 ✨_
 ## 安装
 
 ```bash
-poetry add nonebot-adapter-github
+uv add nonebot-adapter-github
 # 或者
 pip install nonebot-adapter-github
 ```
