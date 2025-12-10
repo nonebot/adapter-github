@@ -32,6 +32,7 @@ events = {
     "custom_property": {
         "created": "CustomPropertyCreated",
         "deleted": "CustomPropertyDeleted",
+        "promote_to_enterprise": "CustomPropertyPromotedToEnterprise",
         "updated": "CustomPropertyUpdated",
     },
     "custom_property_values": "CustomPropertyValuesUpdated",
@@ -99,6 +100,12 @@ events = {
         "deleted": "IssueCommentDeleted",
         "edited": "IssueCommentEdited",
     },
+    "issue_dependencies": {
+        "blocked_by_added": "IssueDependenciesBlockedByAdded",
+        "blocked_by_removed": "IssueDependenciesBlockedByRemoved",
+        "blocking_added": "IssueDependenciesBlockingAdded",
+        "blocking_removed": "IssueDependenciesBlockingRemoved",
+    },
     "issues": {
         "assigned": "IssuesAssigned",
         "closed": "IssuesClosed",
@@ -112,10 +119,12 @@ events = {
         "pinned": "IssuesPinned",
         "reopened": "IssuesReopened",
         "transferred": "IssuesTransferred",
+        "typed": "IssuesTyped",
         "unassigned": "IssuesUnassigned",
         "unlabeled": "IssuesUnlabeled",
         "unlocked": "IssuesUnlocked",
         "unpinned": "IssuesUnpinned",
+        "untyped": "IssuesUntyped",
     },
     "label": {
         "created": "LabelCreated",
@@ -295,10 +304,12 @@ events = {
         "resolve": "RepositoryVulnerabilityAlertResolve",
     },
     "secret_scanning_alert": {
+        "assigned": "SecretScanningAlertAssigned",
         "created": "SecretScanningAlertCreated",
         "publicly_leaked": "SecretScanningAlertPubliclyLeaked",
         "reopened": "SecretScanningAlertReopened",
         "resolved": "SecretScanningAlertResolved",
+        "unassigned": "SecretScanningAlertUnassigned",
         "validated": "SecretScanningAlertValidated",
     },
     "secret_scanning_alert_location": "SecretScanningAlertLocationCreated",

@@ -17,7 +17,7 @@ classifiers = [
 dependencies = [
   "nonebot2>=2.2.0,<3",
   "pydantic>=1.10.0,<3.0.0,!=2.5.0,!=2.5.1",
-  "githubkit[auth-app]>=0.12.2,<0.13.0",
+  "githubkit[auth-app]>=0.14.0,<0.15.0",
 ]
 
 [project.urls]
@@ -27,10 +27,10 @@ Documentation = "https://github.com/nonebot/adapter-github"
 
 [dependency-groups]
 dev = [
-  "ruff>=0.8.2,<0.9",
+  "ruff>=0.14.0,<0.15",
   "Jinja2>=3.1.2,<4",
   "nonemoji>=0.1.2,<0.2",
-  "pre-commit>=3.1.0,<4",
+  "pre-commit>=4.3.0,<5",
 ]
 
 [build-system]
