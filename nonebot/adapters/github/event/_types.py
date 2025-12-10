@@ -304,10 +304,12 @@ events = {
         "resolve": "RepositoryVulnerabilityAlertResolve",
     },
     "secret_scanning_alert": {
+        "assigned": "SecretScanningAlertAssigned",
         "created": "SecretScanningAlertCreated",
         "publicly_leaked": "SecretScanningAlertPubliclyLeaked",
         "reopened": "SecretScanningAlertReopened",
         "resolved": "SecretScanningAlertResolved",
+        "unassigned": "SecretScanningAlertUnassigned",
         "validated": "SecretScanningAlertValidated",
     },
     "secret_scanning_alert_location": "SecretScanningAlertLocationCreated",

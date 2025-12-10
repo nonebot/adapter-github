@@ -399,6 +399,9 @@ if TYPE_CHECKING:
     from .repository_vulnerability_alert_resolve import (
         RepositoryVulnerabilityAlertResolve as RepositoryVulnerabilityAlertResolve,
     )
+    from .secret_scanning_alert_assigned import (
+        SecretScanningAlertAssigned as SecretScanningAlertAssigned,
+    )
     from .secret_scanning_alert_created import (
         SecretScanningAlertCreated as SecretScanningAlertCreated,
     )
@@ -413,6 +416,9 @@ if TYPE_CHECKING:
     )
     from .secret_scanning_alert_resolved import (
         SecretScanningAlertResolved as SecretScanningAlertResolved,
+    )
+    from .secret_scanning_alert_unassigned import (
+        SecretScanningAlertUnassigned as SecretScanningAlertUnassigned,
     )
     from .secret_scanning_alert_validated import (
         SecretScanningAlertValidated as SecretScanningAlertValidated,
@@ -728,12 +734,14 @@ else:
         ".repository_vulnerability_alert_resolve": (
             "RepositoryVulnerabilityAlertResolve",
         ),
+        ".secret_scanning_alert_assigned": ("SecretScanningAlertAssigned",),
         ".secret_scanning_alert_created": ("SecretScanningAlertCreated",),
         ".secret_scanning_alert_publicly_leaked": (
             "SecretScanningAlertPubliclyLeaked",
         ),
         ".secret_scanning_alert_reopened": ("SecretScanningAlertReopened",),
         ".secret_scanning_alert_resolved": ("SecretScanningAlertResolved",),
+        ".secret_scanning_alert_unassigned": ("SecretScanningAlertUnassigned",),
         ".secret_scanning_alert_validated": ("SecretScanningAlertValidated",),
         ".secret_scanning_alert_location": ("SecretScanningAlertLocationCreated",),
         ".secret_scanning_scan": ("SecretScanningScanCompleted",),
