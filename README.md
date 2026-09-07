@@ -123,7 +123,9 @@ async with bot.as_installation(installation_id=1):
 
     resp = await bot.async_graphql(query=query)
 
-    async for issue in bot.github.paginate(bot.rest.issues.async_list_for_repo, owner="owner", repo="repo"):
+    async for issue in bot.github.paginate(
+        bot.rest.issues.async_list_for_repo, owner="owner", repo="repo"
+    ):
         print(issue)
 ```
 
